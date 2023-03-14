@@ -20,10 +20,15 @@ class FaissStore:
                  chunk_size=1500,
                  parser='html.parser',
                  index_name='docs.index',
-                 store_name='faiss_store.pkl'
+                 store_name='faiss_store.pkl',
+                 indicies_name='doc_id_to_filename.pkl',
+                 store_path=None,
+                 index_path=None,
+                 indicies_path = None
                  ):
         self.model = SentenceTransformer(model_name)
         self.store = faiss.IndexFlatIP(768)
+        self.indicies = {}
         self.device = torch.device(
             'cuda:0' if torch.cuda.is_available() else 'cpu')
         self.chunk_size = chunk_size
@@ -33,15 +38,21 @@ class FaissStore:
         self.processor = Processor()
         self.index_name = index_name
         self.store_name = store_name
-        self.doc_id_to_text = {}
+        self.indicies_name = indicies_name
+        self.store_path = store_path
+        self.index_path = index_path
+        self.indicies_path = indicies_path
+        self.index_to_id = {}
 
     def load_store(self):
-        with open(self.store_name, "rb") as f:
+        with open(self.store_path, "rb") as f:
             self.store = pickle.load(f)
+        with open(self.indicies_path, "rb") as f:
+            self.indicies = pickle.load(f)
+        self.store.index = faiss.read_index(self.index_path)
 
     def _add_to_index(self,embedding):
         self.store.add(embedding.reshape(1, -1))
-
 
     def index_documents(self):
         json_files = sorted(list(self.data_dir.glob('*.json'))) 
@@ -50,7 +61,7 @@ class FaissStore:
                 doc = json.load(f)
                 doc_text = self.processor.process(doc)
                 embedding = self.encoder.encode(doc_text)
-                self.doc_id_to_text[idx] = doc_text
+                self.index_to_id[idx] = str(doc['id'])
                 self._add_to_index(embedding)
 
         faiss.write_index(self.store, self.index_name)
@@ -58,23 +69,14 @@ class FaissStore:
 
         with open(self.store_name, "wb") as f:
             pickle.dump(self.store, f)
+            
+        with open(self.indicies_name, 'wb') as f:
+            pickle.dump(self.index_to_id, f)
 
-    def search(self, query, k=10):
+    def search(self, query, top_k=1):
         self.model.to(self.device)
         with torch.no_grad():
             query_embedding = self.model.encode(query, device=self.device)
         self.store.nprobe = 1
-        distances, indices = self.store.search(
-            query_embedding.reshape(1, -1), k)
-        indices = indices[0]
-        distances = distances[0]
-        results = []
-        for idx, dist in zip(indices, distances):
-            if idx in self.doc_id_to_text:  # retrieve text based on doc ID mapping
-                doc_text = self.doc_id_to_text[idx]
-                results.append({
-                    'id': idx,
-                    'text': doc_text,
-                    'score': float(dist),
-                })
-        return results
+        results = self.store.search(query_embedding.reshape(1, -1), top_k)
+        return [self.indicies[idx] for idx in results[1][0]]
