@@ -3,3 +3,4 @@ lib/__pycache__
 lib/__test__/__pycache__
 .env
 example
+models

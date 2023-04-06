@@ -9,6 +9,12 @@ class Processor:
     spacy.prefer_gpu()
     self.nlp = spacy.load('en_core_web_sm')
     self.parser = 'html.parser'
+    
+  def to_text(self, doc):
+    html = doc['body']
+    soup = BeautifulSoup(html, self.parser)
+    doc_text = soup.get_text()
+    return doc_text
   
   def process(self, doc):
     html = doc['body']

@@ -6,7 +6,6 @@ import faiss
 import json
 import pickle
 import pydash as _
-import numpy as np
 import torch
 
 from encoder import Encoder
@@ -21,14 +20,14 @@ class FaissStore:
                  parser='html.parser',
                  index_name='docs.index',
                  store_name='faiss_store.pkl',
-                 indicies_name='doc_id_to_filename.pkl',
+                 indices_name='doc_id_to_filename.pkl',
                  store_path=None,
                  index_path=None,
-                 indicies_path = None
+                 indices_path = None
                  ):
         self.model = SentenceTransformer(model_name)
         self.store = faiss.IndexFlatIP(768)
-        self.indicies = {}
+        self.indices = {}
         self.device = torch.device(
             'cuda:0' if torch.cuda.is_available() else 'cpu')
         self.chunk_size = chunk_size
@@ -38,17 +37,17 @@ class FaissStore:
         self.processor = Processor()
         self.index_name = index_name
         self.store_name = store_name
-        self.indicies_name = indicies_name
+        self.indices_name = indices_name
         self.store_path = store_path
         self.index_path = index_path
-        self.indicies_path = indicies_path
+        self.indices_path = indices_path
         self.index_to_id = {}
 
     def load_store(self):
         with open(self.store_path, "rb") as f:
             self.store = pickle.load(f)
-        with open(self.indicies_path, "rb") as f:
-            self.indicies = pickle.load(f)
+        with open(self.indices_path, "rb") as f:
+            self.indices = pickle.load(f)
         self.store.index = faiss.read_index(self.index_path)
 
     def _add_to_index(self,embedding):
@@ -70,7 +69,7 @@ class FaissStore:
         with open(self.store_name, "wb") as f:
             pickle.dump(self.store, f)
             
-        with open(self.indicies_name, 'wb') as f:
+        with open(self.indices_name, 'wb') as f:
             pickle.dump(self.index_to_id, f)
 
     def search(self, query, top_k=1):
@@ -78,5 +77,11 @@ class FaissStore:
         with torch.no_grad():
             query_embedding = self.model.encode(query, device=self.device)
         self.store.nprobe = 1
-        results = self.store.search(query_embedding.reshape(1, -1), top_k)
-        return [self.indicies[idx] for idx in results[1][0]]
+        distances, indices = self.store.search(query_embedding.reshape(1, -1), top_k)
+        results = []
+        for i in range(len(_.get(indices, 0))):
+            result = {}
+            result['score'] = _.get(distances, [0, i], 0.0)
+            result['doc_id'] = _.get(self.indices, _.get(indices, [0, i]))
+            results.append(result)
+        return results

@@ -1,12 +1,13 @@
 import sys
 sys.path.append('lib')
 
-from processor import Processor
-from faiss_store import FaissStore
-from encoder import Encoder
-import unittest
-import os
 import json
+import os
+import unittest
+
+from encoder import Encoder
+from faiss_store import FaissStore
+
 
 
 class TestFaissStore(unittest.TestCase):
@@ -16,7 +17,8 @@ class TestFaissStore(unittest.TestCase):
         self.parser = 'html.parser'
         self.model_name = 'sentence-transformers/all-mpnet-base-v2'
         self.faiss_store = FaissStore(self.model_name, self.data_dir, self.chunk_size,
-                                      self.parser, 'test_docs.index', 'test_faiss_store.pkl')
+                                      self.parser, 'test_docs.index', 'test_faiss_store.pkl', 'test_doc_id_to_filename.pkl', 'test_faiss_store.pkl', 'test_docs.index', 'test_doc_id_to_filename.pkl'
+                                      )
 
         if not os.path.exists(self.data_dir):
             os.mkdir(self.data_dir)
@@ -48,9 +50,9 @@ class TestFaissStore(unittest.TestCase):
         self.encoder = Encoder(self.model_name)
         self.assertTrue(os.path.exists('test_docs.index'))
         self.assertTrue(os.path.exists('test_faiss_store.pkl'))
+        self.faiss_store.load_store()
         docs = self.faiss_store.search('sample article', 1)
-        assert len(
-            docs) == 1 and docs[0]['id'] == 0 and docs[0]['score'] > 0.9 and docs[0]['text'] == 'sample article'
+        assert len(docs) == 1 and docs[0]['doc_id'] == '123'
 
 
 if __name__ == '__main__':
