@@ -1,20 +1,14 @@
 {
   "add_special_tokens": true,
+  "output_attentions": false,
+  "output_hidden_states": false,
+  "use_cache": true,
   "do_sample": true,
   "early_stopping": false,
-  "eos_token_id": 2,
-  "length_penalty": 1.0,
-  "max_new_tokens": 1024,
-  "max_prompt_length": 1024,
-  "min_length": 0,
+  "max_new_tokens": 2048,
+  "max_prompt_length": 2048,
   "model_path": "models/llama-7b",
-  "no_repeat_ngram_size": 2,
-  "num_beams": 1,
-  "penalty_alpha": 0.0,
-  "repetition_penalty": 1.2,
-  "temperature": 0.6,
-  "top_k": 50,
-  "top_p": 0.9,
-  "typical_p": 1.0,
-  "generation_attempts": 1
+  "temperature": 0.1,
+  "top_k": 40,
+  "top_p": 0.75
 }
