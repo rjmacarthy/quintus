@@ -7,15 +7,15 @@ SCRAPE_URL = os.environ.get("SCRAPE_URL")
 
 
 class Scraper:
-    def __init__(self, output_dir):
-        self.output_dir = output_dir
-        if not os.path.exists(output_dir):
-            os.makedirs(output_dir)
+    def __init__(self, data_dir):
+        self.data_dir = data_dir
+        if not os.path.exists(data_dir):
+            os.makedirs(data_dir)
 
     def write_article(self, article):
         article_id = article["id"]
         with open(
-            os.path.join(self.output_dir, f"article{article_id}.json"), "w"
+            os.path.join(self.data_dir, f"article{article_id}.json"), "w"
         ) as article_file:
             article_file.write(
                 json.dumps(

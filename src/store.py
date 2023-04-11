@@ -14,12 +14,11 @@ from utils.scraper import Scraper
 
 class Store:
     def __init__(
-        self,
-        model_name,
-        *,
-        data_dir="data",
-        parser="html.parser",
-        database_name="embeddings"
+        self, 
+        model_name, *, 
+        data_dir="data", 
+        parser="html.parser", 
+        db_name="embeddings",
     ):
         self.model = SentenceTransformer(model_name)
         self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -27,11 +26,11 @@ class Store:
         self.data_dir = Path(data_dir)
         self.encoder = Encoder(model_name)
         self.processor = Processor()
-        self.document_repository = Repository(Document, database_name)
-        self.scraper = Scraper()
+        self.document_repository = Repository(Document, db_name)
+        self.scraper = Scraper(self.data_dir)
 
     def scrape(self, url):
-        self.scraper.scrape(url, self.data_dir, self.parser)
+        self.scraper.scrape(url)
 
     def search(self, query):
         self.model.to(self.device)
