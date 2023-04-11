@@ -25,7 +25,6 @@ def get_engine(
     db_name: str = database,
 ):
     create_database(db_name)
-
     engine = create_engine(db_name)
     Base.metadata.create_all(engine)
     return engine
