@@ -8,15 +8,15 @@ sys.path.append("src")
 
 from store import Store
 
+model_name = os.environ.get("EMBEDDING_MODEL")
+
 
 class TestStore(unittest.TestCase):
     def setUp(self):
         self.data_dir = "test_data"
         self.parser = "html.parser"
-        self.model_name = "sentence-transformers/all-mpnet-base-v2"
 
         self.document_store = Store(
-            self.model_name,
             data_dir=self.data_dir,
             db_name="test_embeddings",
         )

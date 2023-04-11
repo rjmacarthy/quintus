@@ -15,7 +15,12 @@ async def generate(input_text, tokenizer, model, device, **kwargs):
     config = copy.deepcopy(config)
     pad_token_id = config.pad_token_id
     eos_token_id = config.eos_token_id
-
+    consecutive_eos_tokens = 0
+    target_consecutive_eos_tokens = 5
+    consecutive_line_breaks = 0
+    target_consecutive_line_breaks = 2
+    line_break_token = 13
+        
     kwargs["output_attentions"] = False
     kwargs["output_hidden_states"] = False
     kwargs["use_cache"] = config.use_cache
@@ -51,8 +56,21 @@ async def generate(input_text, tokenizer, model, device, **kwargs):
         input_ids = torch.cat([input_ids, tokens[:, None]], dim=-1)
 
         if eos_token_id is not None:
-            not_eos = sum(tokens != i for i in eos_token_id)
+            not_eos = torch.all(torch.tensor([tokens != i for i in eos_token_id]), dim=0).to(device)
             incomplete_sequences = incomplete_sequences.mul(not_eos.long())
+            
+            if tokens.item() == eos_token_id:
+                consecutive_eos_tokens += 1
+            else:
+                consecutive_eos_tokens = 0
+                
+            if tokens.item() == line_break_token:
+                consecutive_line_breaks += 1
+            else:
+                consecutive_line_breaks = 0
+
+            if consecutive_eos_tokens >= target_consecutive_eos_tokens or consecutive_line_breaks >= target_consecutive_line_breaks:
+                break
 
         status = incomplete_sequences.clone()
 

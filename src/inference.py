@@ -1,25 +1,17 @@
+import gc
+import torch
+import asyncio
+
 from model import get_model
-from config import config
+from inference.config import config
 from utils.processor import Processor
 from inference.stream import stream
 from store import Store
-import sys
-import json
-import gc
-import torch
-from pathlib import Path
-import asyncio
 
-parent_dir = Path(__file__).resolve().parent.parent
-
-sys.path.append(str(parent_dir))
-
-
-cwd = Path(__file__).resolve().parent
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 model, tokenizer = get_model(config)
-document_store = Store(model_name="sentence-transformers/all-mpnet-base-v2")
+ds = Store()
 
 
 def clear_torch_cache():
@@ -28,16 +20,20 @@ def clear_torch_cache():
 
 
 def get_prompt(question):
-    result = document_store.search(question)
-    text = result[0].doc_text
+    max_context_length = 500
+    print("Searching for context...", question)
+    results = ds.search(question)
+    text = results[0].doc_text
     processor = Processor()
-
+    context = processor.html_to_text(text)
+    context = context[:max_context_length]
+    
     prompt = f"""
-    You are a helpful AI assistant who can answer questions about the following article:
-    {processor.to_text(text)}
-    Give a detailed answer to the following question:
-    {question}
-  """
+        You are a helpful AI assistant who answers questions about the followin context.
+        {context}
+        Give a short but consice answer to the following question using the context above:
+        {question}
+    """
 
     return prompt
 

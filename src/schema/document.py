@@ -8,8 +8,9 @@ Base = declarative_base()
 
 class Document(Base):
     __tablename__ = "documents"
-
     id = Column(Integer, primary_key=True)
     doc_id = Column(String)
     doc_text = Column(String)
+    doc_url = Column(String)
+    doc_title = Column(String)
     embedding = mapped_column(Vector(768))

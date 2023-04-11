@@ -10,19 +10,13 @@ class Processor:
         self.nlp = spacy.load("en_core_web_sm")
         self.parser = "html.parser"
 
-    def to_text(self, doc):
-        html = doc["body"]
+    def html_to_text(self, html):
         soup = BeautifulSoup(html, self.parser)
         doc_text = soup.get_text()
         return doc_text
 
-    def process(self, doc):
-        html = doc["body"]
-        soup = BeautifulSoup(html, self.parser)
-        doc_text = soup.get_text()
-        doc_nlp = self.nlp(doc_text)
-        doc_filtered = [
-            token.text for token in doc_nlp if not token.is_stop and not token.is_punct
-        ]
-        doc_text = join(doc_filtered, " ")
+    def process(self, text):
+        doc_text = join([
+            token.text for token in self.nlp(text) if not token.is_stop and not token.is_punct
+        ], " ")
         return doc_text

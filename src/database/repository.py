@@ -26,7 +26,7 @@ class Repository:
         with self.session() as session:
             entities = session.scalars(
                 select(self.model_type)
-                .order_by(self.model_type.embedding.cosine_distance(embedding))
+                .order_by(self.model_type.embedding.l2_distance(embedding))
                 .limit(5)
             ).all()
         return entities
