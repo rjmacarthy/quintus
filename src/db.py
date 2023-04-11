@@ -4,7 +4,7 @@ from models import Base
 
 password = os.environ.get("PGPASSWORD") or "password"
 user = os.environ.get("PGUSER") or "postgres"
-database = os.environ.get("PGDATABASE") or "bfx_embeddings"
+database = os.environ.get("PGDATABASE") or "embeddings"
 host = os.environ.get("PGHOST") or "localhost"
 port = os.environ.get("PGPORT") or 5432
 
