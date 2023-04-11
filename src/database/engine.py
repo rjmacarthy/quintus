@@ -8,9 +8,6 @@ database = os.environ.get("PGDATABASE") or "embeddings"
 host = os.environ.get("PGHOST") or "localhost"
 port = os.environ.get("PGPORT") or 5432
 
-# import Base from schema
-
-
 
 def get_uri(db_name):
     return f"postgresql://{user}:{password}@{host}:{port}/{db_name}"

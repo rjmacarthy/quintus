@@ -3,9 +3,11 @@ import os
 import unittest
 
 import sys
-sys.path.append('src')
+
+sys.path.append("src")
 
 from store import Store
+
 
 class TestStore(unittest.TestCase):
     def setUp(self):
