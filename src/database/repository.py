@@ -1,11 +1,11 @@
 from sqlalchemy.orm import sessionmaker
-from db import get_engine
+from database.engine import get_engine
 from sqlalchemy.sql import select
 
 
 class Repository:
-    def __init__(self, model_type, database="embeddings"):
-        self.engine = get_engine(database=database)
+    def __init__(self, model_type, db_name="embeddings"):
+        self.engine = get_engine(db_name=db_name)
         Session = sessionmaker(bind=self.engine)
         self.session = Session
         self.model_type = model_type

@@ -5,11 +5,11 @@ import json
 import pydash as _
 import torch
 
-from encoder import Encoder
-from models import Document
-from processor import Processor
-from repository import Repository
-from scraper import Scraper
+from database.repository import Repository
+from schema.document import Document
+from utils.encoder import Encoder
+from utils.processor import Processor
+from utils.scraper import Scraper
 
 
 class Store:

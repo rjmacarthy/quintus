@@ -2,8 +2,10 @@ import json
 import os
 import unittest
 
-from store import Store
+import sys
+sys.path.append('src')
 
+from store import Store
 
 class TestStore(unittest.TestCase):
     def setUp(self):

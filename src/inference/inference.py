@@ -1,7 +1,7 @@
 from model import get_model
 from config import config
-from processor import Processor
-from stream import stream
+from utils.processor import Processor
+from inference.stream import stream
 from store import Store
 import sys
 import json
@@ -28,15 +28,13 @@ def clear_torch_cache():
 
 
 def get_prompt(question):
-    result = document_store.search(question, top_k=1)
-    with open(f"data/article{result[0]['doc_id']}.json") as f:
-        document = json.load(f)
-
+    result = document_store.search(question)
+    text = result[0].doc_text
     processor = Processor()
 
     prompt = f"""
     You are a helpful AI assistant who can answer questions about the following article:
-    {processor.to_text(document)}
+    {processor.to_text(text)}
     Give a detailed answer to the following question:
     {question}
   """

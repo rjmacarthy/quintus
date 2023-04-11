@@ -1,7 +1,7 @@
 import yaml
 from pathlib import Path
 
-config_path = Path(__file__).parent.parent / "config.yml"
+config_path = Path(__file__).parent / "config.yml"
 
 with open(config_path, "r") as ymlfile:
     yml_config = yaml.safe_load(ymlfile)
