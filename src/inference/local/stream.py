@@ -2,7 +2,7 @@ import torch
 import asyncio
 import pydash as _
 
-from inference.generate import generate
+from inference.local.generate import generate
 
 
 async def stream(prompt, tokenizer, model, device):

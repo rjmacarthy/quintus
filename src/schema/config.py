@@ -14,3 +14,4 @@ class LocalModelConfig(Base):
     top_k = Column(Integer)
     num_beams = Column(Integer)
     max_new_tokens = Column(Integer)
+    openai_api_key = Column(String)

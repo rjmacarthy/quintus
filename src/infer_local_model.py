@@ -2,13 +2,14 @@ import torch
 import asyncio
 
 from local_model import get_model
-from inference.stream import stream
+from inference.local.stream import stream
 from store import Store
 from schema.config import LocalModelConfig
 from database.repository import Repository
 from templates.simple import simple_prompt
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
 
 async def consume_stream(stream):
     async for line in stream:
