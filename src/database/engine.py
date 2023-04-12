@@ -4,7 +4,7 @@ from sqlalchemy_utils import create_database, database_exists
 from sqlalchemy.sql import text
 from sqlalchemy.ext.declarative import declarative_base
 
-from schema import Base
+from database.schema import Base
 
 PGPASSWORD = os.environ.get("PGPASSWORD") or "password"
 PGUSER = os.environ.get("PGUSER") or "postgres"

@@ -6,13 +6,13 @@ import torch
 import os
 
 from database.repository import Repository
-from schema.document import Document
+from database.schema.document import Document
 from utils.encoder import Encoder
 from utils.processor import Processor
 from utils.scraper import Scraper
 
 
-class Store:
+class Quintus:
     def __init__(
         self,
         *,
@@ -21,7 +21,6 @@ class Store:
         data_dir="data",
         parser="html.parser",
         db_name="embeddings",
-        scrape=False,
     ):
         self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         self.parser = parser
@@ -31,8 +30,6 @@ class Store:
         self.document_repository = Repository(Document, db_name)
         self.scraper = Scraper(self.data_dir)
         self.model_name = model_name
-        if scrape:
-            scrape()
 
     def scrape(self, url):
         self.scraper.scrape(url)
@@ -41,7 +38,7 @@ class Store:
         with torch.no_grad():
             return self.document_repository.search(self.encoder.encode(query))
 
-    def index(self):
+    def injest(self):
         json_files = sorted(list(self.data_dir.glob("*.json")))
         for _, file in enumerate(tqdm(json_files, desc="Processing JSON files")):
             with open(file) as f:

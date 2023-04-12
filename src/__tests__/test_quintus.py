@@ -6,7 +6,7 @@ import sys
 
 sys.path.append("src")
 
-from store import Store
+from src.quintus import Quintus
 
 model_name = os.environ.get("EMBEDDING_MODEL")
 
@@ -16,7 +16,7 @@ class TestStore(unittest.TestCase):
         self.data_dir = "test_data"
         self.parser = "html.parser"
 
-        self.document_store = Store(
+        self.document_store = Quintus(
             data_dir=self.data_dir,
             db_name="test_embeddings",
         )

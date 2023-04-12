@@ -1,4 +1,4 @@
-def system_prompt(entity):
+def get_system_prompt(entity):
     return f"""
     You are a helpful customer support representative for {entity}
     that answers questions based on given context and question, you will also be given a url where the information came from.
@@ -13,9 +13,16 @@ def system_prompt(entity):
   """.strip()
 
 
-def system_prompt_test(entity):
-  return f"""
-    You are a helpful customer support representative for {entity}
-    that answers questions based on given context and question, you will also be given a url where the information came from.
-  """
-  
+def get_system_prompt_test(entity):
+    return f"""
+      You are a helpful customer support representative for {entity}
+      that answers questions based on given context and question, you will also be given a url where the information came from.
+    """
+
+
+def get_context_prompt(url, context, question):
+    return f"""
+      Url: {url}
+      Context: {context}
+      Question: {question}
+    """.strip()
