@@ -1,5 +1,4 @@
 from pathlib import Path
-from sentence_transformers import SentenceTransformer
 from tqdm import tqdm
 import json
 import pydash as _
@@ -17,7 +16,8 @@ class Store:
     def __init__(
         self,
         *,
-        model_name=os.environ.get("EMBEDDING_MODEL"),
+        model_name=os.environ.get("EMBEDDING_MODEL")
+        or "sentence-transformers/all-mpnet-base-v2",
         data_dir="data",
         parser="html.parser",
         db_name="embeddings",
@@ -39,9 +39,7 @@ class Store:
 
     def search(self, query):
         with torch.no_grad():
-            return self.document_repository.search(
-                self.encoder.encode(query)
-            )
+            return self.document_repository.search(self.encoder.encode(query))
 
     def index(self):
         json_files = sorted(list(self.data_dir.glob("*.json")))

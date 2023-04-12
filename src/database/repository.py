@@ -22,6 +22,11 @@ class Repository:
             entity = session.query(self.model_type).get(id)
         return entity
 
+    def get(self):
+        with self.session() as session:
+            entity = session.query(self.model_type).first()
+        return entity
+
     def search(self, embedding):
         with self.session() as session:
             entities = session.scalars(

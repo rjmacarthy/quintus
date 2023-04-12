@@ -16,7 +16,12 @@ class Processor:
         return doc_text
 
     def process(self, text):
-        doc_text = join([
-            token.text for token in self.nlp(text) if not token.is_stop and not token.is_punct
-        ], " ")
+        doc_text = join(
+            [
+                token.text
+                for token in self.nlp(text)
+                if not token.is_stop and not token.is_punct
+            ],
+            " ",
+        )
         return doc_text

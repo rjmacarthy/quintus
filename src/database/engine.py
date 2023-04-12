@@ -1,8 +1,10 @@
 import os
 from sqlalchemy import create_engine, Engine
 from sqlalchemy_utils import create_database, database_exists
-from schema.document import Base
 from sqlalchemy.sql import text
+from sqlalchemy.ext.declarative import declarative_base
+
+from schema import Base
 
 PGPASSWORD = os.environ.get("PGPASSWORD") or "password"
 PGUSER = os.environ.get("PGUSER") or "postgres"
@@ -23,9 +25,10 @@ def get_engine(
     if not database_exists(engine.url):
         create_database(engine.url)
 
+    Base.metadata.create_all(engine)
+
     with engine.connect() as con:
         con.execute(text("CREATE EXTENSION IF NOT EXISTS vector"))
         con.commit()
 
-    Base.metadata.create_all(engine)
     return engine

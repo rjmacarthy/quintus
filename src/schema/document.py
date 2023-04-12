@@ -3,7 +3,7 @@ from pgvector.sqlalchemy import Vector
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import mapped_column
 
-Base = declarative_base()
+from . import Base
 
 
 class Document(Base):
