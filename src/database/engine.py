@@ -25,10 +25,10 @@ def get_engine(
     if not database_exists(engine.url):
         create_database(engine.url)
 
-    Base.metadata.create_all(engine)
-
     with engine.connect() as con:
         con.execute(text("CREATE EXTENSION IF NOT EXISTS vector"))
         con.commit()
+
+    Base.metadata.create_all(engine)
 
     return engine

@@ -1,17 +1,15 @@
 import os
 import openai
+import time
+import threading
+import sys
+import itertools
 
-from quintus import Quintus
-from utils.loading import loading_animation
-from templates.prompts import Prompts
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 openai.api_key = OPENAI_API_KEY
 
 model_engine = "gpt-3.5-turbo"
-
-quintus = Quintus()
-prompts = Prompts(quintus)
 
 
 def send_system_message(messages):
@@ -19,12 +17,11 @@ def send_system_message(messages):
     return response
 
 
-def chat():
-    messages = [
-        {"role": "system", "content": prompts.system_prompt_test("The company")},
-    ]
+def chat(prompts):
+    messages = [{"role": "system", "content": prompts.system_prompt("The company")}]
     send_system_message(messages)
     while True:
+        reply = None
         user_input = input("👤: ")
         message = prompts.context_prompt(user_input)
 
@@ -48,7 +45,20 @@ def chat():
 
         if message:
             messages.append({"role": "user", "content": message})
-            loading_animation()
+            done = False
+
+            def animate():
+                for c in itertools.cycle(["|", "/", "-", "\\"]):
+                    if done:
+                        break
+                    sys.stdout.write("\rloading " + c)
+                    sys.stdout.flush()
+                    sys.stdout.write("\r")
+                    time.sleep(0.1)
+
+            t = threading.Thread(target=animate)
+            t.start()
+
             completion = openai.ChatCompletion.create(
                 model=model_engine,
                 messages=messages,
@@ -56,6 +66,8 @@ def chat():
             reply = completion["choices"][0]["message"]["content"]
             print(f"🤖: {reply}")
             messages.append({"role": "assistant", "content": reply})
+
+            done = True
 
 
 if __name__ == "__main__":
