@@ -1,6 +1,6 @@
 ## Quintus
 
-Quintus is a Python package that enables you to quickly and easily build conversational AI chatbots. It's designed to be easy to use and allows you to customize the chatbot to suit your specific needs. 
+Quintus is a Python package that enables you to quickly and easily build conversational Q&A chatbots using semantic search and LLM inference. It's designed to be easy to use and allows you to customize the chatbot to suit your specific needs. Initially Quintus only scrapes data from the Zendesk article API, however with coming updates it will support additional APIs.
 
 ### Installation
 
