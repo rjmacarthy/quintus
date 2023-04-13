@@ -7,3 +7,4 @@ test_data
 build
 dist
 lib/quintus.egg-info
+lib/main.py

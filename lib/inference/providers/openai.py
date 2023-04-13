@@ -68,7 +68,3 @@ def chat(prompts):
             messages.append({"role": "assistant", "content": reply})
 
             done = True
-
-
-if __name__ == "__main__":
-    chat()

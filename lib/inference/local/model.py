@@ -3,10 +3,21 @@ from transformers import LlamaTokenizer, LlamaForCausalLM
 from peft import PeftModel
 from pathlib import Path
 
+from database.repository import Repository
+from database.schema.config import LocalModelConfig
 
-def get_model(config):
-    model_path = Path(__file__).parent / config.model_name_or_path
-    ft_model_path = Path(__file__).parent / config.ft_model_name_or_path
+
+def get_local_model():
+    conig_repository = Repository(LocalModelConfig)
+    config = conig_repository.get()
+    models_dir = Path(__file__).parent.parent.parent
+
+    model_path = models_dir / config.model_name_or_path
+    ft_model_path = models_dir / config.ft_model_name_or_path
+
+    print(f"Loading model from {model_path}")
+    print(f"Loading fine-tuned model from {ft_model_path}")
+
     tokenizer = LlamaTokenizer.from_pretrained(model_path)
 
     model = LlamaForCausalLM.from_pretrained(

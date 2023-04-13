@@ -7,10 +7,12 @@ import os
 
 from database.repository import Repository
 from database.schema.document import Document
+from utils.model_config import save_model_config
 from utils.encoder import Encoder
 from utils.processor import Processor
 from utils.scraper import Scraper
 from inference.providers.openai import chat as openai_chat
+from inference.local.local import chat as local_chat
 from inference.providers.provider_names import ProviderNames
 from templates.prompts import Prompts
 
@@ -39,18 +41,24 @@ class Quintus:
     def get_provider(self, provider):
         if provider == ProviderNames.OPEN_AI.value:
             return openai_chat
+        if provider == ProviderNames.LOCAL_MODEL.value:
+            return local_chat
         else:
             raise Exception(f"Provider {provider} not found")
 
     def scrape(self, url, filters):
         self.scraper.scrape(url, filters)
         return self
+    
+    def add_local_model(self, model_name, ft_model_name=None):
+        save_model_config(model_name, ft_model_name)
+        return self
 
-    def search(self, query):
+    def search(self, query: str):
         with torch.no_grad():
             return self.document_repository.search(self.encoder.encode(query))
 
-    def chat(self, provider):
+    def chat(self, provider: str):
         return self.get_provider(provider)(self.prompts)
 
     def injest(self):
