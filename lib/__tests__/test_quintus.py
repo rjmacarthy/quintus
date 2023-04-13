@@ -6,7 +6,7 @@ import sys
 
 sys.path.append("src")
 
-from src.quintus import Quintus
+from lib.quintus import Quintus
 
 model_name = os.environ.get("EMBEDDING_MODEL")
 
