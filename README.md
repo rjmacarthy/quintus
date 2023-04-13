@@ -36,7 +36,7 @@ quintus = Quintus()
 quintus.add_local_model("llama-7b", "llama-7b-ft").chat("local")
 ```
 
-In this example, we've added a local model called "llama-7b". The `add_local_model()` method takes two arguments: the name of the model and the the name of the fie tuned model, we are using `peft` for loading `LoRa` fine-tuned models. Finally, we call the `chat()` method and pass in the string "local" to initiate a conversation with the local model.
+In this example, we've added a local model called "llama-7b". The `add_local_model()` method takes two arguments: the name of the model and the the name of the fine-tuned model, we are using `peft` for loading `LoRa` fine-tuned models. Finally, we call the `chat()` method and pass in the string "local" to initiate a conversation with the local model.
 
 ### Notes
 
