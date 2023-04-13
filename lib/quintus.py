@@ -46,6 +46,7 @@ class Quintus:
         print(f"Scraping {url} with filters {filters}...")
         self.scraper.scrape(url, filters)
         print("Done scraping.")
+        return self
 
     def search(self, query):
         with torch.no_grad():
@@ -68,3 +69,4 @@ class Quintus:
                 doc_url=doc["url"],
                 embedding=embedding,
             )
+        return self
