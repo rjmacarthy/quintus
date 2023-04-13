@@ -43,9 +43,7 @@ class Quintus:
             raise Exception(f"Provider {provider} not found")
 
     def scrape(self, url, filters):
-        print(f"Scraping {url} with filters {filters}...")
         self.scraper.scrape(url, filters)
-        print("Done scraping.")
         return self
 
     def search(self, query):

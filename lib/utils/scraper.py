@@ -38,6 +38,7 @@ class Scraper:
         return data
 
     def scrape(self, url, filters):
+        print(f"Scraping {url} with filters {filters}...")
         self.url = url
         self.filters = filters
         page_number = 1
@@ -50,3 +51,4 @@ class Scraper:
                 if not self.filter_result(article):
                     self.write_article(article)
             page_number += 1
+        print("Done scraping.")
