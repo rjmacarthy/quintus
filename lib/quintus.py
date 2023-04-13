@@ -11,8 +11,6 @@ from utils.model_config import save_model_config
 from utils.encoder import Encoder
 from utils.processor import Processor
 from utils.scraper import Scraper
-from inference.providers.openai import chat as openai_chat
-from inference.local.local import chat as local_chat
 from inference.engines import ProviderEngines
 from templates.prompts import Prompts
 
@@ -39,9 +37,11 @@ class Quintus:
 
     def get_provider(self, provider):
         if provider == ProviderEngines.OPEN_AI:
-            return openai_chat
+            from inference.providers.openai import chat
+            return chat
         if provider == ProviderEngines.LOCAL_MODEL:
-            return local_chat
+            from inference.local.local import chat
+            return chat
         else:
             raise Exception(f"Provider {provider} not found")
 
