@@ -4,8 +4,8 @@ from sqlalchemy.sql import select
 
 
 class Repository:
-    def __init__(self, model_type, db_name="embeddings"):
-        self.engine = get_engine(db_name=db_name)
+    def __init__(self, model_type, **kwargs):
+        self.engine = get_engine(**kwargs)
         Session = sessionmaker(bind=self.engine)
         self.session = Session
         self.model_type = model_type
@@ -32,7 +32,7 @@ class Repository:
             entities = session.scalars(
                 select(self.model_type)
                 .order_by(self.model_type.embedding.l2_distance(embedding))
-                .limit(5)
+                .limit(4)
             ).all()
         return entities
 

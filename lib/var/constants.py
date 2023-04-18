@@ -1,0 +1,1 @@
+DOC_MAX_LENGTH = 512

@@ -1,5 +1,5 @@
-from quintus import Quintus, ProviderEngines
+from quintus import Quintus, Providers
 
 quintus = Quintus()
 
-quintus.chat(ProviderEngines.OPEN_AI)
+quintus.chat(Providers.OPEN_AI)

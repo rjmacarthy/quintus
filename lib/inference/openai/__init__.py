@@ -51,7 +51,7 @@ def chat(prompts):
                 for c in itertools.cycle(["|", "/", "-", "\\"]):
                     if done:
                         break
-                    sys.stdout.write("\rloading " + c)
+                    sys.stdout.write("\rThinking " + c)
                     sys.stdout.flush()
                     sys.stdout.write("\r")
                     time.sleep(0.1)

@@ -10,19 +10,16 @@ class Prompts:
     def __init__(self, quintus):
         self.quintus = quintus
 
-    def process(self, question):
+    def get_context(self, question):
         max_prompt_length = 1024
         results = self.quintus.search(question)
-        text = results[0].doc_text
-        url = results[0].doc_url
-        processor = Processor()
-        context = processor.html_to_text(text)
-        context = context[:max_prompt_length]
-        return url, context
+        text = " ".join([result.doc_text for result in results[:3]])
+        context = text[:max_prompt_length]
+        return context
 
     def context_prompt(self, question):
-        url, context = self.process(question)
-        return get_context_prompt(question, context, url)
+        context = self.get_context(question)
+        return get_context_prompt(question, context)
 
     def system_prompt(self, entity):
         return get_system_prompt(entity)
