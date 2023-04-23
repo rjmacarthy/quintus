@@ -28,7 +28,7 @@ quintus.load(LoaderType.ZENDESK, url).chat(Providers.OPEN_AI)
 
 ```
 
-In this example, `quintus` is a new instance of the `Quintus` class. We use the `scrape()` method to scrape relevant data from the web, and then `injest()` method to process and store the data. Finally, we call the `chat()` method and pass in the string "openai" to initiate a conversation with the OpenAI API.
+In this example, `quintus` is a new instance of the `Quintus` class. We use the `load()` method to store the data. Finally, we call the `chat()` method and pass in the string "openai" to initiate a conversation with the OpenAI API.
 
 ### Using Local Models
 
