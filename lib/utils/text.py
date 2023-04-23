@@ -1,6 +1,7 @@
 from var.constants import DOC_MAX_LENGTH
 import re
 
+
 def split_text(text: str, max_length=DOC_MAX_LENGTH):
     text = text.strip()
 
@@ -10,7 +11,7 @@ def split_text(text: str, max_length=DOC_MAX_LENGTH):
     chunks = []
     chunk_start = 0
 
-    for match in re.finditer(r'\W', text):
+    for match in re.finditer(r"\W", text):
         if match.start() - chunk_start + 1 > max_length:
             chunk_end = match.start()
             chunks.append(text[chunk_start:chunk_end].strip())
