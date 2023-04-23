@@ -5,6 +5,8 @@ import threading
 import sys
 import itertools
 
+from templates.prompts import Prompts
+
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 openai.api_key = OPENAI_API_KEY
@@ -17,7 +19,7 @@ def send_system_message(messages):
     return response
 
 
-def chat(prompts):
+def chat(prompts: Prompts):
     messages = [{"role": "system", "content": prompts.system_prompt("The company")}]
     send_system_message(messages)
     while True:

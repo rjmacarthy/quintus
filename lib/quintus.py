@@ -39,21 +39,23 @@ class Quintus:
         db_host="localhost",
         db_port=5432,
     ):
-        self.device = torch.device(
-            "cuda:0" if torch.cuda.is_available() else "cpu")
+        self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         self.parser = parser
         self.encoder = Encoder(model_name)
         self.processor = Processor()
         self.document_repository = Repository(
-            Document, db_name=db_name, db_user=db_user, db_password=db_password,
-            db_host=db_host, db_port=db_port
+            Document,
+            db_name=db_name,
+            db_user=db_user,
+            db_password=db_password,
+            db_host=db_host,
+            db_port=db_port,
         )
-        self.prompts = Prompts(self)
+        self.prompts = Prompts(self.document_repository)
         self.model_name = model_name
 
     def get_loader(self, loader_type):
         return LOADER_MAP[loader_type](self.url)
-
 
     def get_provider(self, provider):
         provider_fn = PROVIDER_MAP.get(provider)

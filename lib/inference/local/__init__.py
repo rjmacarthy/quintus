@@ -3,6 +3,7 @@ import asyncio
 
 from inference.local.model import get_local_model
 from inference.local.stream import stream
+from templates.prompts import Prompts
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -13,7 +14,7 @@ async def consume_stream(stream):
     print()
 
 
-def chat(prompts):
+def chat(prompts: Prompts):
     model, tokenizer = get_local_model()
 
     while True:
