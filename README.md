@@ -18,6 +18,7 @@ Here's an example of how you can use Quintus to build a chatbot that interacts w
 from quintus import Quintus, LoaderType, Providers
 
 quin = Quintus(
+  db_host="localhost",
   db_user="postgres",
   db_password="password",
 )
