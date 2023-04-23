@@ -12,7 +12,7 @@ pip install quintus
 
 ### Usage
 
-Here's an example of how you can use Quintus to build a chatbot that interacts with the OpenAI API:
+Here's an example of how you can use Quintus to build a chatbot that interacts with Zendesk and the OpenAI API:
 
 ```python
 from quintus import Quintus, LoaderType, Providers
