@@ -11,8 +11,8 @@ class ZendeskLoader(Loader):
 
     def get_data(self):
         print("Loading Zendesk data please wait...")
-        page_number = 1
-        data = []
+        page_number: int = 1
+        data: list = []
         while True:
             print(f"Fetching page {page_number}", end="\r")
             response = self.get_page(page_number)
@@ -20,7 +20,7 @@ class ZendeskLoader(Loader):
             if len(articles) == 0:
                 break
             else:
-                documents = _.map_(
+                documents: list = _.map_(
                     articles,
                     lambda article: {
                         "id": article["id"],
@@ -33,7 +33,7 @@ class ZendeskLoader(Loader):
                 page_number += 1
         return data
 
-    def get_page(self, page_number):
+    def get_page(self, page_number: int) -> dict:
         page_url = f"{self.url}?page={page_number}"
         response = requests.get(page_url)
         data = response.json()

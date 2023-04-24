@@ -1,15 +1,16 @@
 from var.constants import DOC_MAX_LENGTH
 import re
+from typing import List
 
 
-def split_text(text: str, max_length=DOC_MAX_LENGTH):
-    text = text.strip()
+def split_text(text: str, max_length=DOC_MAX_LENGTH) -> List[str]:
+    text: str = text.strip()
 
     if len(text) <= max_length:
         return [text]
 
-    chunks = []
-    chunk_start = 0
+    chunks: List[str] = []
+    chunk_start: int = 0
 
     for match in re.finditer(r"\W", text):
         if match.start() - chunk_start + 1 > max_length:

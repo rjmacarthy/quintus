@@ -1,6 +1,6 @@
 from enum import Enum
 
 
-class Providers(Enum):
+class Provider(Enum):
     OPEN_AI = "openai"
     LOCAL_MODEL = "local"

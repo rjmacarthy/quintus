@@ -10,12 +10,12 @@ class Processor:
         self.nlp = spacy.load("en_core_web_sm")
         self.parser = "html.parser"
 
-    def html_to_text(self, html):
+    def html_to_text(self, html: str) -> str:
         soup = BeautifulSoup(html, self.parser)
         doc_text = soup.get_text()
         return doc_text
 
-    def process(self, text):
+    def process(self, text: str) -> str:
         doc_text = join(
             [
                 token.text

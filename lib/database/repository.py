@@ -44,7 +44,7 @@ class Repository:
             session.commit()
         return entity
 
-    def delete(self, id):
+    def delete(self, id: int):
         with self.session() as session:
             entity = session.query(self.model_type).get(id)
             session.delete(entity)

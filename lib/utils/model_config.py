@@ -4,7 +4,7 @@ from database.schema.config import LocalModelConfig
 from database.repository import Repository
 
 
-def save_model_config(model_name, model_name_ft):
+def save_model_config(model_name: str, model_name_ft: str):
     repository = Repository(LocalModelConfig)
 
     repository.create(
