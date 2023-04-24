@@ -1,5 +1,8 @@
-from quintus import Quintus, Providers
+from quintus import Quintus, Provider
 
-quintus = Quintus()
+quintus = Quintus(
+  db_user="postgres",
+  db_password="password",
+)
 
-quintus.chat(Providers.OPEN_AI)
+quintus.chat(Provider.OPEN_AI)
