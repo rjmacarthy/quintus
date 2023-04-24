@@ -27,11 +27,11 @@ class Repository:
             entity = session.query(self.model_type).first()
         return entity
 
-    def search(self, embedding):
+    def search(self, embeddings):
         with self.session() as session:
             entities = session.scalars(
                 select(self.model_type)
-                .order_by(self.model_type.embedding.l2_distance(embedding))
+                .order_by(self.model_type.embedding.l2_distance(embeddings))
                 .limit(4)
             ).all()
         return entities

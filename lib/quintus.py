@@ -52,7 +52,7 @@ class Quintus:
             db_host=db_host,
             db_port=db_port,
         )
-        self.prompts = Prompts(self.document_repository)
+        self.prompts = Prompts(self.document_repository, self.encoder)
         self.model_name = model_name
 
     def get_loader(self, loader_type: LoaderType):
@@ -74,10 +74,6 @@ class Quintus:
     def add_local_model(self, model_name: str, ft_model_name: str):
         save_model_config(model_name, ft_model_name)
         return self
-
-    def search(self, query: str):
-        with torch.no_grad():
-            return self.document_repository.search(self.encoder.encode(query))
 
     def save_document(self, doc_id: str, doc_text: str, doc_title: str, doc_url: str):
         with torch.no_grad():
