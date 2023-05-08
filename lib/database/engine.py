@@ -13,13 +13,12 @@ PGHOST = os.environ.get("PGHOST") or "localhost"
 PGPORT = os.environ.get("PGPORT") or 5432
 
 
-def get_uri(db_name, db_user, db_password, db_host, db_port):
-    return f"postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}"
+def get_uri():
+    return f"postgresql://{PGUSER}:{PGPASSWORD}@{PGHOST}:{PGPORT}/{PGDATABASE}"
 
 
-def get_engine(**kwargs):
-
-    engine: Engine = create_engine(get_uri(**kwargs))
+def get_engine():
+    engine: Engine = create_engine(get_uri())
 
     if not database_exists(engine.url):
         create_database(engine.url)

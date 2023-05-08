@@ -17,11 +17,7 @@ Here's an example of how you can use Quintus to build a chatbot that interacts w
 ```python
 from quintus import Quintus, LoaderType, Provider
 
-quintus = Quintus(
-  db_host="localhost",
-  db_user="postgres",
-  db_password="password",
-)
+quintus = Quintus()
 
 url = "https://postman.zendesk.com/api/v2/help_center/en-us/articles.json"
 

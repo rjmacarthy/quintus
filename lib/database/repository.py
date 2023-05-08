@@ -4,8 +4,8 @@ from sqlalchemy.sql import select
 
 
 class Repository:
-    def __init__(self, model_type, **kwargs):
-        self.engine = get_engine(**kwargs)
+    def __init__(self, model_type):
+        self.engine = get_engine()
         Session = sessionmaker(bind=self.engine)
         self.session = Session
         self.model_type = model_type
@@ -22,7 +22,7 @@ class Repository:
             entity = session.query(self.model_type).get(id)
         return entity
 
-    def get(self):
+    def get_first(self):
         with self.session() as session:
             entity = session.query(self.model_type).first()
         return entity

@@ -9,8 +9,8 @@ from database.schema.config import LocalModelConfig
 
 def get_local_model():
     conig_repository = Repository(LocalModelConfig)
-    config = conig_repository.get()
-    models_dir = Path(__file__).parent.parent.parent
+    config = conig_repository.get_first()
+    models_dir = Path(__file__).parent.parent.parent / "models"
 
     model_path = models_dir / config.model_name_or_path
     ft_model_path = models_dir / config.ft_model_name_or_path
