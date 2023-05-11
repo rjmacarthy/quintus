@@ -11,20 +11,16 @@ class NamedEntityRecognition:
     def process_entities(self, entities):
         processed_entities = {}
         for entity in entities:
-            # Concatenate split words
             if entity["entity"] not in processed_entities:
                 processed_entities[entity["entity"]] = entity["word"]
             else:
-                # If the entity already exists and the current word is part of the same entity (signified by '##')
                 if "##" in entity["word"]:
                     processed_entities[entity["entity"]] += entity["word"].replace(
                         "##", ""
                     )
                 else:
-                    # If it's a new occurrence of the same type of entity, add a separator
                     processed_entities[entity["entity"]] += ", " + entity["word"]
 
-        # Remove duplicates
         for entity, words in processed_entities.items():
             unique_words = list(set(words.split(", ")))
             processed_entities[entity] = ", ".join(unique_words)
