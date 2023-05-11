@@ -14,9 +14,10 @@ class Prompts:
 
     def get_context(self, question: str) -> str:
         max_prompt_length = 1024
+        num_relevant_docs = 3
         embeddings = self.encoder.encode(question)
         results = self.repository.search(embeddings)
-        text = " ".join([result.doc_text for result in results[:3]])
+        text = " ".join([result.doc_text for result in results[:num_relevant_docs]])
         return text[:max_prompt_length]
 
     def context_prompt(self, question: str, entity: str) -> str:

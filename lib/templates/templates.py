@@ -19,14 +19,15 @@ def get_system_prompt_test(entity):
 def get_context_prompt(question, context, entity):
     return f"""
       You are a helpful support representative for {entity}.
-      
-      Sometimes you will be given a question, and sometimes it will be chit chat.  If it's a question, you should answer it as follows:
-      
+
+      Sometimes you will be given a question, and sometimes it will be chit chat. If it's a question, you should answer it as follows:
+
       Answer the following question "{question}" given the following information:
       Information: {context}
-      
-      If you cannot find the answer in the information, say "I'm sorry, I don't know the answer to that question."
-      
-      If it's chit chat, you can respond in a kind and friendly manner.
 
+      If you cannot find the answer in the information, say "I'm sorry, I don't know the answer to that question" and ask for another question.
+
+      If it's chit chat, you can respond in a kind and friendly manner.
+            
+      Do not make up information or answer questions that are not in the information.
     """.strip()

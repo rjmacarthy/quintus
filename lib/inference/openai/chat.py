@@ -1,21 +1,18 @@
-import os
 import openai
 import time
 
 from templates.prompts import Prompts
 from inference.tasks.chat import Chat
-
-openai.api_key = os.getenv("OPENAI_API_KEY")
-
-model_engine = "gpt-3.5-turbo"
+from services.openai import get_completion, get_model
 
 
 class OpenAIChat(Chat):
     def __init__(self, prompts: Prompts):
         super().__init__(prompts)
+        self.model = get_model()
 
     def send_system_message(self, messages):
-        response = openai.ChatCompletion.create(model=model_engine, messages=messages)
+        response = openai.ChatCompletion.create(model=self.model, messages=messages)
         return response
 
     def chat(self):
@@ -24,7 +21,6 @@ class OpenAIChat(Chat):
         ]
         self.send_system_message(messages)
         while True:
-            reply = None
             user_input = input("👤: ")
             message = user_input.lower().strip()
 
@@ -53,17 +49,12 @@ class OpenAIChat(Chat):
 
                 print("🤖: Thinking...")
 
-                completion = openai.ChatCompletion.create(
-                    model=model_engine,
-                    messages=messages,
-                )
-
-                reply = completion["choices"][0]["message"]["content"]
+                response = get_completion(messages)
 
                 time.sleep(2)
 
-                print(f"\033[F\033[K🤖: {reply}")
+                print(f"\033[F\033[K🤖: {response}")
 
-                self.add_message(reply, "assistant")
+                self.add_message(message, "assistant")
 
-                messages.append({"role": "assistant", "content": reply})
+                messages.append({"role": "assistant", "content": response})
