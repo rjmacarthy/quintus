@@ -5,13 +5,9 @@ import time
 from templates.prompts import Prompts
 from inference.tasks.chat import Chat
 
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-openai.api_key = OPENAI_API_KEY
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 model_engine = "gpt-3.5-turbo"
-
-
-NUM_INITIAL_MESSAGES = 2
 
 
 class OpenAIChat(Chat):
