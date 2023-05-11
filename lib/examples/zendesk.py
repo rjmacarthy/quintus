@@ -1,9 +1,6 @@
 from quintus import Quintus, LoaderType
 
-quintus = Quintus(
-    db_user="postgres",
-    db_password="password",
-)
+quintus = Quintus()
 
 quintus.load(
     LoaderType.ZENDESK,
