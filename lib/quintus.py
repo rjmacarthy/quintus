@@ -2,13 +2,12 @@ from tqdm import tqdm
 import pydash as _
 import torch
 import os
-from typing import List, Dict, Any, ClassVar
+from typing import List, Dict, Any
 
 from database.repository import Repository
 from database.schema.document import Document
 from inference import Provider
-from inference.local import chat as local_chat
-from inference.openai import chat
+from inference.openai.chat import OpenAIChat
 from loaders.loaders import LoaderType
 from loaders.zendesk import ZendeskLoader
 from templates.prompts import Prompts
@@ -17,13 +16,12 @@ from utils.model_config import save_model_config
 from utils.processor import Processor
 from utils.text import split_text, DOC_MAX_LENGTH
 
-LOADER_MAP : Dict[LoaderType, Any] = {
+LOADER_MAP: Dict[LoaderType, Any] = {
     LoaderType.ZENDESK: ZendeskLoader,
 }
 
 PROVIDER_MAP: Dict[Provider, Any] = {
-    Provider.OPEN_AI: chat,
-    Provider.LOCAL_MODEL: local_chat,
+    Provider.OPEN_AI: OpenAIChat,
 }
 
 
@@ -42,15 +40,16 @@ class Quintus:
         self.document_repository = Repository(Document)
         self.prompts = Prompts(self.document_repository, self.encoder)
         self.model_name = model_name
+        self.chat_provider = None
 
     def get_loader(self, loader_type: LoaderType):
         return LOADER_MAP[loader_type](self.url)
 
     def get_provider(self, provider: str):
-        provider_fn = PROVIDER_MAP.get(provider)
-        if provider_fn is None:
-            raise Exception(f"Provider {provider} not found")
-        return provider_fn
+        Provider = PROVIDER_MAP.get(provider)
+        if Provider is None:
+            raise Exception(f"Provider {Provider} not found")
+        return Provider
 
     def load(self, loader_type: LoaderType, url: str):
         self.url = url
@@ -87,4 +86,4 @@ class Quintus:
         return self
 
     def chat(self, provider: str):
-        return self.get_provider(provider)(self.prompts)
+        return self.get_provider(provider)(self.prompts).chat()

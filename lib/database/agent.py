@@ -1,10 +1,11 @@
 from sqlalchemy import Column, Integer, String
-from sqlalchemy.orm import relationship
 
 from . import Base
+from schema.message import Message
 
 
-class Chat(Base):
+class Agent(Base):
     __tablename__ = "chats"
     id = Column(Integer, primary_key=True)
-    messages = relationship("Message", backref="chat")
+    model = Column(String)
+    description = Column(String)

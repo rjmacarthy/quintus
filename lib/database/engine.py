@@ -6,11 +6,11 @@ from sqlalchemy.ext.declarative import declarative_base
 
 from database.schema import Base
 
-PGPASSWORD = os.environ.get("PGPASSWORD") or "password"
-PGUSER = os.environ.get("PGUSER") or "postgres"
-PGDATABASE = os.environ.get("PGDATABASE") or "embeddings"
-PGHOST = os.environ.get("PGHOST") or "localhost"
-PGPORT = os.environ.get("PGPORT") or 5432
+PGPASSWORD = "password"
+PGUSER = "postgres"
+PGDATABASE = "embeddings"
+PGHOST = "localhost"
+PGPORT = 5432
 
 
 def get_uri():

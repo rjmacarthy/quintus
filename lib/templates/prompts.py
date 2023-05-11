@@ -11,7 +11,7 @@ class Prompts:
     def __init__(self, repository: Repository, encoder):
         self.repository = repository
         self.encoder = encoder
-        
+
     def get_context(self, question: str) -> str:
         max_prompt_length = 1024
         embeddings = self.encoder.encode(question)
@@ -19,9 +19,9 @@ class Prompts:
         text = " ".join([result.doc_text for result in results[:3]])
         return text[:max_prompt_length]
 
-    def context_prompt(self, question: str) -> str:
+    def context_prompt(self, question: str, entity: str) -> str:
         context = self.get_context(question)
-        return get_context_prompt(question, context)
+        return get_context_prompt(question, context, entity)
 
     def system_prompt(self, entity: str) -> str:
         return get_system_prompt(entity)

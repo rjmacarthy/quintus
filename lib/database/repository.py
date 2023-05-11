@@ -15,6 +15,7 @@ class Repository:
         with self.session() as session:
             session.add(entity)
             session.commit()
+            session.refresh(entity)
         return entity
 
     def get_by_id(self, id):
