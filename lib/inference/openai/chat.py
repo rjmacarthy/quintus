@@ -4,11 +4,13 @@ import time
 from templates.prompts import Prompts
 from inference.tasks.chat import Chat
 from services.openai import get_completion, get_model
+from templates.prompts import Prompts
 
 
 class OpenAIChat(Chat):
-    def __init__(self, prompts: Prompts):
-        super().__init__(prompts)
+    def __init__(self):
+        super().__init__()
+        self.prompts = Prompts()
         self.model = get_model()
 
     def send_system_message(self, messages):

@@ -5,12 +5,15 @@ from templates.templates import (
 )
 
 from database.repository import Repository
+from utils.encoder import Encoder
+from database.repository import Repository
+from database.schema.document import Document
 
 
 class Prompts:
-    def __init__(self, repository: Repository, encoder):
-        self.repository = repository
-        self.encoder = encoder
+    def __init__(self):
+        self.repository = Repository(Document)
+        self.encoder = Encoder()
 
     def get_context(self, question: str) -> str:
         max_prompt_length = 1024

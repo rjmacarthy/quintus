@@ -15,6 +15,7 @@ from utils.encoder import Encoder
 from utils.model_config import save_model_config
 from utils.processor import Processor
 from utils.text import split_text, DOC_MAX_LENGTH
+from api.api import Api
 
 LOADER_MAP: Dict[LoaderType, Any] = {
     LoaderType.ZENDESK: ZendeskLoader,
@@ -38,9 +39,11 @@ class Quintus:
         self.encoder = Encoder(model_name)
         self.processor = Processor()
         self.document_repository = Repository(Document)
-        self.prompts = Prompts(self.document_repository, self.encoder)
         self.model_name = model_name
         self.chat_provider = None
+
+    def serve(self):
+        Api().serve()
 
     def get_loader(self, loader_type: LoaderType):
         return LOADER_MAP[loader_type](self.url)
@@ -86,4 +89,4 @@ class Quintus:
         return self
 
     def chat(self, provider: str):
-        return self.get_provider(provider)(self.prompts).chat()
+        return self.get_provider(provider)().chat()

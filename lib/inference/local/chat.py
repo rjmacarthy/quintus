@@ -5,12 +5,13 @@ from inference.local.model import get_local_model
 from inference.local.stream import stream
 from templates.prompts import Prompts
 
+
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 class LocalChat:
-    def __init__(self, prompts: Prompts):
-        self.prompts = prompts
+    def __init__(self):
+        self.prompts = Prompts()
 
     def chat(self):
         model, tokenizer = get_local_model()

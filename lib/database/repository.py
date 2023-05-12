@@ -19,7 +19,7 @@ class Repository:
         return entity
 
     def get_by_id(self, id):
-        with self.session(self.engine) as session:
+        with self.session() as session:
             entity = session.query(self.model_type).get(id)
         return entity
 
