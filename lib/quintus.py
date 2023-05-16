@@ -37,7 +37,7 @@ class Quintus:
     def local_chat(self):
         LocalChat().chat()
 
-    def serve(self):
+    def server(self):
         Api().serve()
 
     def injest(self, url: str):

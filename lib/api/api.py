@@ -9,7 +9,7 @@ from database.chat_repository import ChatRepository
 from database.schema.document import Document
 from database.schema.message import Message
 from prompts.prompts import Prompts
-from inference.openai.model import get_completion
+from inference.openai.model import OpenAIModel
 
 
 class Api:
@@ -35,26 +35,30 @@ class Api:
             return messages
 
         @app.get("/completion")
-        def completion(query: str, id: str):
+        async def completion(query: str, id: str = None):
+            model = OpenAIModel()
             chat = self.chat_repository.get_by_id(id)
             if chat is not None:
                 messages = build_conversation_history(id)
             else:
-                messages = []
-
+                chat = self.chat_repository.create()
+                messages = [{"role": "system", "content": self.prompts.system_prompt("user")}]
             message = self.prompts.context_prompt(query, "user")
             messages.append({"role": "system", "content": message})
             self.message_repository.create(
-                message=message, time=time.time(), chat_id=self.chat_id, entity="user"
+                message=message, time=time.time(), chat_id=chat.id, entity="user"
             )
-            response = get_completion(messages)
+            response = model.completion(messages)
             self.message_repository.create(
                 message=response,
                 time=time.time(),
-                chat_id=self.chat_id,
+                chat_id=chat.id,
                 entity="assistant",
             )
-            return response
+            return {
+                "response": response,
+                "chat_id": chat.id,
+            }
 
         @app.get("/chat/{id}")
         def get_chat(id: str):

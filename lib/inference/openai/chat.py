@@ -2,7 +2,7 @@ import openai
 import time
 
 from inference.base.chat import Chat
-from lib.inference.openai.model import OpenAIModel
+from inference.openai.model import OpenAIModel
 from prompts.prompts import Prompts
 
 
