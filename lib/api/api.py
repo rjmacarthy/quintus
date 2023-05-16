@@ -42,7 +42,9 @@ class Api:
                 messages = build_conversation_history(id)
             else:
                 chat = self.chat_repository.create()
-                messages = [{"role": "system", "content": self.prompts.system_prompt("user")}]
+                messages = [
+                    {"role": "system", "content": self.prompts.system_prompt("user")}
+                ]
             message = self.prompts.context_prompt(query, "user")
             messages.append({"role": "system", "content": message})
             self.message_repository.create(

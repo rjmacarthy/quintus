@@ -9,4 +9,9 @@ class ChatRepository(Repository):
 
     def get_messages(self, id: str):
         with self.session() as session:
-            return session.query(Message).filter(Message.chat_id == id).all()
+            return (
+                session.query(Message)
+                .filter(Message.chat_id == id)
+                .order_by(Message.time)
+                .all()
+            )
