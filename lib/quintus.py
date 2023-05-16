@@ -30,10 +30,10 @@ class Quintus:
     ):
         self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         self.parser = parser
+        self.model_name = model_name
         self.processor = Processor()
         self.encoder = Encoder(model_name)
         self.document_repository = Repository(Document)
-        self.model_name = model_name
         self.local_chat = LocalChat()
         self.openai_chat = OpenAIChat()
         self.classifier = Classifier()
