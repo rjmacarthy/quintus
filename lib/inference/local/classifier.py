@@ -1,7 +1,7 @@
 import torch
 
-from inference.local.model import get_model
-from templates.prompts import Prompts
+from inference.local.model import LocalModel
+from prompts.prompts import Prompts
 from transformers import GenerationConfig
 
 
@@ -11,12 +11,14 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 class Classifier:
     def __init__(self):
         self.prompts = Prompts()
-        model, tokenizer = get_model()
+        local_model = LocalModel()
+        model, tokenizer = local_model.get_instance()
         self.model = model.to(device)
         self.tokenizer = tokenizer
 
-    def run(self, input_text: str):
-        input_ids = self.tokenizer.encode(input_text, return_tensors="pt").to(device)
+    def run(self, input_text: str, options: list, examples: list):
+        prompt = self.prompts.classification_prompt(input_text, options, examples)
+        input_ids = self.tokenizer.encode(prompt, return_tensors="pt").to(device)
 
         with torch.no_grad():
             generation_config = GenerationConfig(
@@ -34,6 +36,7 @@ class Classifier:
             output_scores=True,
             max_new_tokens=124,
         )
+
         s = generation_output.sequences[0]
         output = self.tokenizer.decode(s)
         return output.split("### Response:")[1].strip()

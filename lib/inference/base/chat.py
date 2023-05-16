@@ -3,7 +3,7 @@ import time
 from database.schema.message import Message
 from database.schema.chat import Chat as ChatSchema
 from database.repository import Repository
-from templates.prompts import Prompts
+from prompts.prompts import Prompts
 from lib.inference.local.summarizer import Summarization
 from lib.inference.local.entity_extractor import EntityExtractor
 

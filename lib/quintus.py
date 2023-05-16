@@ -11,7 +11,7 @@ from inference.openai.chat import OpenAIChat
 from inference.local.chat import LocalChat
 from loaders.loaders import LoaderType
 from loaders.zendesk import ZendeskLoader
-from templates.prompts import Prompts
+from prompts.prompts import Prompts
 from utils.encoder import Encoder
 from utils.model_config import save_model_config
 from utils.processor import Processor

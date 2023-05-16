@@ -1,9 +1,9 @@
 import torch
 import asyncio
 
-from inference.local.model import get_model
+from inference.local.model import LocalModel
 from inference.local.stream import stream
-from templates.prompts import Prompts
+from prompts.prompts import Prompts
 
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -14,7 +14,8 @@ class LocalChat:
         self.prompts = Prompts()
 
     def chat(self):
-        model, tokenizer = get_model()
+        local_model = LocalModel()
+        model, tokenizer = local_model.get_instance()
 
         while True:
             user_input = input("👤: ")

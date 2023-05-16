@@ -1,4 +1,4 @@
-from templates.templates import (
+from prompts.templates import (
     get_system_prompt,
     get_system_prompt_test,
     get_context_prompt,
