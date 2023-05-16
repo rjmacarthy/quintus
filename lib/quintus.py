@@ -8,11 +8,9 @@ from api.api import Api
 from database.repository import Repository
 from database.schema.document import Document
 from inference.local.chat import LocalChat
-from inference.local.chat import LocalChat
 from inference.local.classifier import Classifier
 from inference.local.entity_extractor import EntityExtractor
 from inference.local.summarizer import Summarizer
-from inference.openai.chat import OpenAIChat
 from inference.openai.chat import OpenAIChat
 from loaders.zendesk import ZendeskLoader
 from utils.encoder import Encoder
