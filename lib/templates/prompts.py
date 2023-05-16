@@ -2,6 +2,7 @@ from templates.templates import (
     get_system_prompt,
     get_system_prompt_test,
     get_context_prompt,
+    get_classification_prompt,
 )
 
 from database.repository import Repository
@@ -26,6 +27,11 @@ class Prompts:
     def context_prompt(self, question: str, entity: str) -> str:
         context = self.get_context(question)
         return get_context_prompt(question, context, entity)
+
+    def classification_prompt(
+        self, document: str, options: list, examples: list
+    ) -> str:
+        return get_classification_prompt(document, options, examples)
 
     def system_prompt(self, entity: str) -> str:
         return get_system_prompt(entity)

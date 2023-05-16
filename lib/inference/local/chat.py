@@ -1,7 +1,7 @@
 import torch
 import asyncio
 
-from inference.local.model import get_local_model
+from inference.local.model import get_model
 from inference.local.stream import stream
 from templates.prompts import Prompts
 
@@ -14,11 +14,11 @@ class LocalChat:
         self.prompts = Prompts()
 
     def chat(self):
-        model, tokenizer = get_local_model()
+        model, tokenizer = get_model()
 
         while True:
             user_input = input("👤: ")
-            prompt = self.prompts.context_prompt(user_input)
+            prompt = self.prompts.context_prompt(user_input, "The company")
             response = stream(prompt, tokenizer, model, device)
             asyncio.run(self.consume_stream(response))
             torch.cuda.empty_cache()

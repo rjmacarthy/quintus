@@ -8,6 +8,7 @@ from database.repository import Repository
 from database.schema.document import Document
 from inference import Provider
 from inference.openai.chat import OpenAIChat
+from inference.local.chat import LocalChat
 from loaders.loaders import LoaderType
 from loaders.zendesk import ZendeskLoader
 from templates.prompts import Prompts
@@ -23,6 +24,7 @@ LOADER_MAP: Dict[LoaderType, Any] = {
 
 PROVIDER_MAP: Dict[Provider, Any] = {
     Provider.OPEN_AI: OpenAIChat,
+    Provider.LOCAL_MODEL: LocalChat,
 }
 
 
@@ -41,6 +43,7 @@ class Quintus:
         self.document_repository = Repository(Document)
         self.model_name = model_name
         self.chat_provider = None
+        self.classifier = None
 
     def serve(self):
         Api().serve()
@@ -89,4 +92,4 @@ class Quintus:
         return self
 
     def chat(self, provider: str):
-        return self.get_provider(provider)().chat()
+        return PROVIDER_MAP[provider]().chat()

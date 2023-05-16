@@ -26,10 +26,12 @@ class Api:
         def build_conversation_history(chat_id: str):
             messages = []
             for message in self.chat_repository.get_messages(chat_id):
-                messages.append({
-                    "role": message.entity,
-                    "content": message.message,
-                })
+                messages.append(
+                    {
+                        "role": message.entity,
+                        "content": message.message,
+                    }
+                )
             return messages
 
         @app.get("/completion")
@@ -39,7 +41,7 @@ class Api:
                 messages = build_conversation_history(id)
             else:
                 messages = []
-                
+
             message = self.prompts.context_prompt(query, "user")
             messages.append({"role": "system", "content": message})
             self.message_repository.create(
@@ -47,7 +49,10 @@ class Api:
             )
             response = get_completion(messages)
             self.message_repository.create(
-                message=response, time=time.time(), chat_id=self.chat_id, entity="assistant"
+                message=response,
+                time=time.time(),
+                chat_id=self.chat_id,
+                entity="assistant",
             )
             return response
 
@@ -55,7 +60,7 @@ class Api:
         def get_chat(id: str):
             messages = self.chat_repository.get_messages(id)
             return jsonable_encoder(messages)
-        
+
         @app.get("/ping")
         def ping():
             return "pong"

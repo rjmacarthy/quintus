@@ -7,7 +7,7 @@ from database.repository import Repository
 from database.schema.config import LocalModelConfig
 
 
-def get_local_model():
+def get_model():
     conig_repository = Repository(LocalModelConfig)
     config = conig_repository.get_first()
     models_dir = Path(__file__).parent.parent.parent / "models"

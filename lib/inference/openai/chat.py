@@ -2,7 +2,7 @@ import openai
 import time
 
 from templates.prompts import Prompts
-from inference.tasks.chat import Chat
+from inference.base.chat import Chat
 from services.openai import get_completion, get_model
 from templates.prompts import Prompts
 
@@ -45,7 +45,7 @@ class OpenAIChat(Chat):
                 continue
 
             if message:
-                self.add_message(message, "user")
+                self.message(message, "user")
                 prompt = self.prompts.context_prompt(user_input, "The company")
                 messages.append({"role": "user", "content": prompt})
 
@@ -57,6 +57,6 @@ class OpenAIChat(Chat):
 
                 print(f"\033[F\033[K🤖: {response}")
 
-                self.add_message(message, "assistant")
+                self.message(message, "assistant")
 
                 messages.append({"role": "assistant", "content": response})
