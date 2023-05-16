@@ -11,12 +11,11 @@ from inference.openai.chat import OpenAIChat
 from inference.local.chat import LocalChat
 from loaders.loaders import LoaderType
 from loaders.zendesk import ZendeskLoader
-from prompts import Prompts
 from utils.encoder import Encoder
 from utils.model_config import save_model_config
 from utils.processor import Processor
 from utils.text import split_text, DOC_MAX_LENGTH
-from api.api import Api
+from api import Api
 
 LOADER_MAP: Dict[LoaderType, Any] = {
     LoaderType.ZENDESK: ZendeskLoader,
