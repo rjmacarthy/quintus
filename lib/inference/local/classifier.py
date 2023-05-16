@@ -1,7 +1,7 @@
 import torch
 
 from inference.local.model import LocalModel
-from prompts.prompts import Prompts
+from prompts import Prompts
 from transformers import GenerationConfig
 
 

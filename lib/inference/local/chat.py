@@ -3,7 +3,7 @@ import asyncio
 
 from inference.local.model import LocalModel
 from inference.local.stream import stream
-from prompts.prompts import Prompts
+from prompts import Prompts
 
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

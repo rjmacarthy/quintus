@@ -1,10 +1,9 @@
 import openai
 import time
 
-from prompts.prompts import Prompts
 from inference.base.chat import Chat
 from lib.inference.openai.model import get_completion, get_model
-from prompts.prompts import Prompts
+from prompts import Prompts
 
 
 class OpenAIChat(Chat):
