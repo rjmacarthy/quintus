@@ -2,7 +2,7 @@ import openai
 import time
 
 from inference.base.chat import Chat
-from lib.inference.openai.model import get_completion, get_model
+from inference.openai.model import get_completion, get_model
 from prompts.prompts import Prompts
 
 
@@ -16,9 +16,9 @@ class OpenAIChat(Chat):
         response = openai.ChatCompletion.create(model=self.model, messages=messages)
         return response
 
-    def chat(self):
+    def chat(self, entity="user"):
         messages = [
-            {"role": "system", "content": self.prompts.system_prompt("The company")}
+            {"role": "system", "content": self.prompts.system_prompt(entity)}
         ]
         self.send_system_message(messages)
         while True:

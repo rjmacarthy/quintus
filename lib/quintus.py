@@ -35,10 +35,15 @@ class Quintus:
         self.encoder = Encoder(model_name)
         self.document_repository = Repository(Document)
         self.local_chat = LocalChat()
-        self.openai_chat = OpenAIChat()
         self.classifier = Classifier()
         self.entity_extractor = EntityExtractor()
         self.summarizer = Summarizer()
+
+    def openai_chat(self):
+        OpenAIChat().chat()
+        
+    def local_chat(self):
+        LocalChat().chat()
 
     def serve(self):
         Api().serve()

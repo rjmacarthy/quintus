@@ -8,7 +8,7 @@ from transformers import GenerationConfig
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
-class xClassifier:
+class Classifier:
     def __init__(self):
         self.prompts = Prompts()
         local_model = LocalModel()

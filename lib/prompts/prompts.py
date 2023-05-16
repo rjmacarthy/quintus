@@ -1,6 +1,5 @@
-from templates import (
+from prompts.templates import (
     get_system_prompt,
-    get_system_prompt_test,
     get_context_prompt,
     get_classification_prompt,
 )
@@ -36,5 +35,3 @@ class Prompts:
     def system_prompt(self, entity: str) -> str:
         return get_system_prompt(entity)
 
-    def system_prompt_test(self, entity: str) -> str:
-        return get_system_prompt_test(entity)

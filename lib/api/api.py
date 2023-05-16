@@ -9,7 +9,7 @@ from database.chat_repository import ChatRepository
 from database.schema.document import Document
 from database.schema.message import Message
 from prompts.prompts import Prompts
-from lib.inference.openai.model import get_completion
+from inference.openai.model import get_completion
 
 
 class Api:

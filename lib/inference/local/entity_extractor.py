@@ -4,7 +4,7 @@ from transformers import pipeline
 
 
 class EntityExtractor:
-    def __init__(self, model_name):
+    def __init__(self, model_name="dslim/bert-base-NER"):
         self.model_name = model_name
         self.processor = Processor()
 

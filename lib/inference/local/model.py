@@ -9,9 +9,11 @@ from database.schema.config import LocalModelConfig
 
 class LocalModel():
     def __init__(self):
-        self.get_model()
+        self.model = None
+        self.tokenizer = None
         conig_repository = Repository(LocalModelConfig)
         self.config = conig_repository.get_first()
+
         if not self.model:
             self.load_model()
         if not self.tokenizer:
