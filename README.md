@@ -21,7 +21,7 @@ quintus = Quintus()
 
 url = "https://postman.zendesk.com/api/v2/help_center/en-us/articles.json"
 
-quintus.injest(url).openai_chat.chat()
+quintus.injest(url).openai_chat()
 
 ```
 
@@ -36,7 +36,9 @@ from quintus import Quintus
 
 quintus = Quintus()
 
-quintus.add_local_model("llama-7b", "llama-7b-ft").local_chat.chat()
+url = "https://postman.zendesk.com/api/v2/help_center/en-us/articles.json"
+
+quintus.injest(url).add_local_model("llama-7b", "llama-7b-ft").local_chat()
 ```
 
 In this example, we've added a local model called "llama-7b". The `add_local_model()` method takes two arguments: the name of the model and the the name of the fine-tuned model, we are using `peft` for loading `LoRa` fine-tuned models. Finally, we call the `chat()` method and pass in the string "local" to initiate a conversation with the local model.
