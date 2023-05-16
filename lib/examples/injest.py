@@ -1,4 +1,4 @@
-from quintus import Quintus, LoaderType
+from quintus import Quintus
 
 quintus = Quintus()
 
