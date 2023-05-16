@@ -6,26 +6,19 @@ from typing import List, Dict, Any
 
 from database.repository import Repository
 from database.schema.document import Document
-from inference import Provider
 from inference.openai.chat import OpenAIChat
 from inference.local.chat import LocalChat
-from loaders.loaders import LoaderType
 from loaders.zendesk import ZendeskLoader
 from utils.encoder import Encoder
 from utils.model_config import save_model_config
 from utils.processor import Processor
 from utils.text import split_text, DOC_MAX_LENGTH
-from api import Api
-
-LOADER_MAP: Dict[LoaderType, Any] = {
-    LoaderType.ZENDESK: ZendeskLoader,
-}
-
-PROVIDER_MAP: Dict[Provider, Any] = {
-    Provider.OPEN_AI: OpenAIChat,
-    Provider.LOCAL_MODEL: LocalChat,
-}
-
+from api.api import Api
+from inference.local.classifier import Classifier
+from inference.local.entity_extractor import EntityExtractor
+from inference.local.summarizer import Summarizer
+from inference.local.chat import LocalChat
+from inference.openai.chat import OpenAIChat
 
 class Quintus:
     def __init__(
@@ -37,30 +30,24 @@ class Quintus:
     ):
         self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         self.parser = parser
-        self.encoder = Encoder(model_name)
         self.processor = Processor()
+        self.encoder = Encoder(model_name)
         self.document_repository = Repository(Document)
         self.model_name = model_name
-        self.chat_provider = None
-        self.classifier = None
+        self.local_chat = LocalChat()
+        self.openai_chat = OpenAIChat()
+        self.classifier = Classifier()
+        self.entity_extractor = EntityExtractor()
+        self.summarizer = Summarizer()
 
     def serve(self):
         Api().serve()
 
-    def get_loader(self, loader_type: LoaderType):
-        return LOADER_MAP[loader_type](self.url)
-
-    def get_provider(self, provider: str):
-        Provider = PROVIDER_MAP.get(provider)
-        if Provider is None:
-            raise Exception(f"Provider {Provider} not found")
-        return Provider
-
-    def load(self, loader_type: LoaderType, url: str):
+    def injest(self, url: str):
         self.url = url
-        loader = self.get_loader(loader_type)
+        loader = ZendeskLoader()
         data = loader.get_data()
-        self.injest(data)
+        self.save(data)
         return self
 
     def add_local_model(self, model_name: str, ft_model_name: str):
@@ -79,7 +66,7 @@ class Quintus:
             )
         return self
 
-    def injest(self, data: List[Dict[str, Any]]):
+    def save(self, data: List[Dict[str, Any]]):
         for item in tqdm(data, desc="Saving embeddings..."):
             doc_text = self.processor.html_to_text(item["body"])
             if len(doc_text) > DOC_MAX_LENGTH:
@@ -89,6 +76,3 @@ class Quintus:
             else:
                 self.save_document(item["id"], doc_text, item["title"], item["url"])
         return self
-
-    def chat(self, provider: str):
-        return PROVIDER_MAP[provider]().chat()

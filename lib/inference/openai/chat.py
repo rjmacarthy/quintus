@@ -3,7 +3,7 @@ import time
 
 from inference.base.chat import Chat
 from lib.inference.openai.model import get_completion, get_model
-from prompts import Prompts
+from prompts.prompts import Prompts
 
 
 class OpenAIChat(Chat):

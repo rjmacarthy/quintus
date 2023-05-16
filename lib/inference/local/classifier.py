@@ -1,14 +1,14 @@
 import torch
 
 from inference.local.model import LocalModel
-from prompts import Prompts
+from prompts.prompts import Prompts
 from transformers import GenerationConfig
 
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
-class Classifier:
+class xClassifier:
     def __init__(self):
         self.prompts = Prompts()
         local_model = LocalModel()

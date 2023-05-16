@@ -8,7 +8,7 @@ from database.repository import Repository
 from database.chat_repository import ChatRepository
 from database.schema.document import Document
 from database.schema.message import Message
-from prompts import Prompts
+from prompts.prompts import Prompts
 from lib.inference.openai.model import get_completion
 
 
