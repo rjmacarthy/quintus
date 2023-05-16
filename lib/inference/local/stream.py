@@ -93,6 +93,7 @@ async def generate(input_text, tokenizer, model, device, **kwargs):
         if status.max() <= 0:
             break
 
+
 async def stream(prompt, tokenizer, model, device):
     sequence = torch.empty(0).to(device)
     last_printed_index = 0

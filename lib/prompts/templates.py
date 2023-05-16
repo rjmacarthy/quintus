@@ -8,6 +8,7 @@ def get_system_prompt(entity):
     Remember please do not answer questions that are not in the context or mention the context or article when answering.
   """.strip()
 
+
 def get_context_prompt(question, context, entity):
     return f"""
       You are a helpful assistant {entity}.
@@ -25,10 +26,24 @@ def get_context_prompt(question, context, entity):
     """.strip()
 
 
+def get_openai_classification_prompt(document, options, examples):
+    return f"""
+        You are a document classifying agent.
+        Your only objective is to classify documents using one of the following options:
+        Only answer with one word answer.
+          
+        Options: {', '.join(options)}
+        {f"Examples: {', '.join(examples)}" if examples else ''}
+                        
+        Document: {document}
+    """.strip()
+
+
 def get_classification_prompt(document, options, examples=[]):
     instruction = f"""
         You are a document classifying agent.
         Your only objective is to classify documents using one of the following options:
+        Only answer with one word answer.
           
         Options: {', '.join(options)}
         {f"Examples: {', '.join(examples)}" if examples else ''}

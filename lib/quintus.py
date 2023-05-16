@@ -8,15 +8,13 @@ from api.api import Api
 from database.repository import Repository
 from database.schema.document import Document
 from inference.local.chat import LocalChat
-from inference.local.classifier import Classifier
-from inference.local.entity_extractor import EntityExtractor
-from inference.local.summarizer import Summarizer
 from inference.openai.chat import OpenAIChat
 from loaders.zendesk import ZendeskLoader
 from utils.encoder import Encoder
 from utils.model_config import save_model_config
 from utils.processor import Processor
 from utils.text import split_text, DOC_MAX_LENGTH
+
 
 class Quintus:
     def __init__(
@@ -32,14 +30,10 @@ class Quintus:
         self.processor = Processor()
         self.encoder = Encoder(model_name)
         self.document_repository = Repository(Document)
-        self.local_chat = LocalChat()
-        self.classifier = Classifier()
-        self.entity_extractor = EntityExtractor()
-        self.summarizer = Summarizer()
 
     def openai_chat(self):
         OpenAIChat().chat()
-        
+
     def local_chat(self):
         LocalChat().chat()
 

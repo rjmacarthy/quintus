@@ -2,7 +2,7 @@ import openai
 import time
 
 from inference.base.chat import Chat
-from inference.openai.model import get_completion, get_model
+from lib.inference.openai.model import OpenAIModel
 from prompts.prompts import Prompts
 
 
@@ -10,16 +10,14 @@ class OpenAIChat(Chat):
     def __init__(self):
         super().__init__()
         self.prompts = Prompts()
-        self.model = get_model()
+        self.model = OpenAIModel()
 
     def send_system_message(self, messages):
         response = openai.ChatCompletion.create(model=self.model, messages=messages)
         return response
 
     def chat(self, entity="user"):
-        messages = [
-            {"role": "system", "content": self.prompts.system_prompt(entity)}
-        ]
+        messages = [{"role": "system", "content": self.prompts.system_prompt(entity)}]
         self.send_system_message(messages)
         while True:
             user_input = input("👤: ")
@@ -50,7 +48,7 @@ class OpenAIChat(Chat):
 
                 print("🤖: Thinking...")
 
-                response = get_completion(messages)
+                response = self.model.completion(messages)
 
                 time.sleep(2)
 
