@@ -7,8 +7,6 @@ from typing import List, Dict, Any
 from api.api import Api
 from database.repository import Repository
 from database.schema.document import Document
-from inference.local.chat import LocalChat
-from inference.openai.chat import OpenAIChat
 from loaders.zendesk import ZendeskLoader
 from utils.encoder import Encoder
 from utils.model_config import save_model_config
@@ -31,13 +29,7 @@ class Quintus:
         self.encoder = Encoder(model_name)
         self.document_repository = Repository(Document)
 
-    def openai_chat(self):
-        OpenAIChat().chat()
-
-    def local_chat(self):
-        LocalChat().chat()
-
-    def server(self):
+    def serve(self):
         Api().serve()
 
     def injest(self, url: str):
