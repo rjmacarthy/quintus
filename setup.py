@@ -7,7 +7,7 @@ setup(
     author="rjmacarthy",
     author_email="rjmacarthy@protonmail.com",
     url="https://github.com/rjmacarthy/quintus",
-    package_dir={"": "lib"},
+    package_dir={"": "src"},
     install_requires=[
         "beautifulsoup4",
         "pgvector",
