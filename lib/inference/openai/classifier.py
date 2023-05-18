@@ -7,6 +7,7 @@ class Classifier:
         self.model = OpenAIModel()
 
     def run(self, document, options, examples=[]):
-        prompt = Prompts().openai_classification_prompt(document, options, examples)
+        prompts = Prompts()
+        prompt = prompts.classification_prompt(document, options, examples)
         messages = [{"role": "system", "content": self.prompts.system_prompt(prompt)}]
         return self.model.completion(messages)

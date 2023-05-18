@@ -31,28 +31,20 @@ class Prompts:
     def context_prompt(self, question, entity):
         return f"""
             You are a helpful assistant {entity}.
-
             Sometimes you will be given a question, and sometimes it will be chit chat. If it's a question, you should answer it as follows:
-
             Answer the following question "{question}" given the following information:
             Information: {self.get_context(question)}
-
             If you cannot find the answer in the information, say "I'm sorry, I don't know the answer to that question" and ask for another question.
-
             If it's chit chat, you can respond in a kind and friendly manner.
-                    
             Do not make up information or answer questions that are not in the information.
         """.strip()
 
     def classification_prompt(self, document, options, examples):
         return f"""
-            You are a document classifying agent.
-            Your only objective is to classify documents using one of the following options:
-            Only answer with one word answer.
-            
+            You are a document classifying agent responsible for classifying documents into one of the following categories: {', '.join(options)}.
+            Only answer with one word.
             Options: {', '.join(options)}
-            {f"Examples: {', '.join(examples)}" if examples else ''}
-                            
+            {f"Examples: {', '.join(examples)}" if examples else ''}          
             Document: {document}
         """.strip()
 
@@ -64,31 +56,27 @@ class Prompts:
             HTML should be removed from the documents, and if the response becomes too long, return { "error": "response too long" }. 
             You may receive additional arbitrary data to assist in generating the JSON. 
             When presented with a request for JSON generation along with a specified structure, you should respond with the corresponding JSON.
-
             For example, if you receive the following request:
 
             Data: "joe bloggs, male, 38"
 
-            You would reply with:
-
             Structure: { "name": "string", "gender": "string", "age": "number" }
 
-            Output:
-            
+            You would reply with:
             ```
             {
                 "name": "Joe Bloggs",
                 "gender": "Male",
                 "age": 38
             }
+            ```
             
-            Please provide your first instruction for JSON generation by returning "Hello, world."
+            Provide your first instruction for JSON generation by returning "Hello, world."
         """.strip()
 
     def json_cleaner_prompt(self, data, structure):
         return f"""
-            You are a JSON cleaner agent specialized in cleaning JSON from various documents, 
-            regardless of their format or quality. 
+            You are a JSON cleaner agent specialized in cleaning JSON from various documents, regardless of their format or quality. 
             Your task is to return clean JSON for the given data, structure, and output. 
             The input document can be anything and may be poorly formatted.
 
