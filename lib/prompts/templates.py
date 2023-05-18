@@ -60,7 +60,8 @@ def get_classification_prompt(document, options, examples=[]):
         
         \n\n### Response:\n
       """
-      
+
+
 def json_cleaner_system_prompt():
     return """      
         You are a JSON generation agent responsible for generating JSON from various documents, irrespective of their format. 
@@ -89,7 +90,8 @@ def json_cleaner_system_prompt():
         
         Please provide your first instruction for JSON generation by returning "Hello, world."
     """.strip()
-    
+
+
 def json_cleaner_prompt(data, structure):
     return f"""
         You are a JSON cleaner agent specialized in cleaning JSON from various documents, 
