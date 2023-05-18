@@ -1,0 +1,8 @@
+Metadata-Version: 2.1
+Name: quintus
+Version: 0.2
+Summary: Document Embedding and Inference
+Home-page: https://github.com/rjmacarthy/quintus
+Author: rjmacarthy
+Author-email: rjmacarthy@protonmail.com
+License-File: LICENCE

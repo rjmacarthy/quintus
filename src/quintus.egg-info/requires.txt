@@ -1,0 +1,12 @@
+beautifulsoup4
+pgvector
+json
+numpy
+pathlib
+pydash
+sentence-transformers
+spacy
+torch
+tqdm
+unittest
+openai

@@ -14,8 +14,7 @@ class Prompts:
         num_relevant_docs = 3
         embeddings = self.encoder.encode(question)
         results = self.repository.search(embeddings)
-        text = " ".join(
-            [result.doc_text for result in results[:num_relevant_docs]])
+        text = " ".join([result.doc_text for result in results[:num_relevant_docs]])
         return text[:max_prompt_length]
 
     def system_prompt(self, entity):
