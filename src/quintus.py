@@ -9,7 +9,6 @@ from database.repository import Repository
 from database.schema.document import Document
 from loaders.zendesk import ZendeskLoader
 from utils.encoder import Encoder
-from utils.model_config import save_model_config
 from utils.processor import Processor
 from utils.text import split_text, DOC_MAX_LENGTH
 
@@ -37,10 +36,6 @@ class Quintus:
         loader = ZendeskLoader()
         data = loader.get_data()
         self.save(data)
-        return self
-
-    def add_local_model(self, model_name: str, ft_model_name: str):
-        save_model_config(model_name, ft_model_name)
         return self
 
     def save_document(self, doc_id: str, doc_text: str, doc_title: str, doc_url: str):
