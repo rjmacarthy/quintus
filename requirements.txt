@@ -1,0 +1,12 @@
+beautifulsoup4==4.10.1
+pgvector==1.7.0
+json==0.4.0
+numpy==1.21.5
+pathlib==1.0.1
+pydash==5.1.0
+sentence-transformers==2.1.0
+spacy==3.2.0
+torch==1.10.1
+tqdm==4.62.3
+unittest==2.7.0
+openai==2.7.0
