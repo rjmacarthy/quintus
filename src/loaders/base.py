@@ -7,5 +7,5 @@ class Loader(abc.ABC):
         self.url = url
 
     @abc.abstractmethod
-    def get_data(self):
+    def run(self):
         pass

@@ -9,7 +9,7 @@ class ZendeskLoader(Loader):
         self.name = "zendesk"
         super().__init__(url)
 
-    def get_data(self):
+    def run(self):
         print("Loading Zendesk data please wait...")
         page_number: int = 1
         data: list = []
