@@ -1,1 +1,0 @@
-DOC_MAX_LENGTH: int = 500
