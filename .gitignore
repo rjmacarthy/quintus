@@ -6,6 +6,6 @@ models
 test_data
 build
 dist
-lib/quintus.egg-info
-lib/main.py
-lib/examples/private
+src/quintus.egg-info
+src/main.py
+src/examples/private
