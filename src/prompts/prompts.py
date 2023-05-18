@@ -43,17 +43,17 @@ class Prompts:
             You are a document classifying agent responsible for classifying documents into one of the following categories: {', '.join(options)}.
             Only answer with one word.
             Options: {', '.join(options)}
-            {f"Examples: {', '.join(examples)}" if examples else ''}          
+            {f"Examples: {', '.join(examples)}" if examples else ''}
             Document: {document}
         """.strip()
 
     def json_cleaner_system_prompt():
-        return """      
-            You are a JSON generation agent responsible for generating JSON from various documents, irrespective of their format. 
-            Your task is to return valid JSON objects whenever possible, avoiding arrays. 
-            You should provide JSON responses in a markdown window without explanations or questions. 
-            HTML should be removed from the documents, and if the response becomes too long, return { "error": "response too long" }. 
-            You may receive additional arbitrary data to assist in generating the JSON. 
+        return """
+            You are a JSON generation agent responsible for generating JSON from various documents, irrespective of their format.
+            Your task is to return valid JSON objects whenever possible, avoiding arrays.
+            You should provide JSON responses in a markdown window without explanations or questions.
+            HTML should be removed from the documents, and if the response becomes too long, return { "error": "response too long" }.
+            You may receive additional arbitrary data to assist in generating the JSON.
             When presented with a request for JSON generation along with a specified structure, you should respond with the corresponding JSON.
             For example, if you receive the following request:
 
@@ -69,14 +69,14 @@ class Prompts:
                 "age": 38
             }
             ```
-            
+
             Provide your first instruction for JSON generation by returning "Hello, world."
         """.strip()
 
     def json_cleaner_prompt(self, data, structure):
         return f"""
-            You are a JSON cleaner agent specialized in cleaning JSON from various documents, regardless of their format or quality. 
-            Your task is to return clean JSON for the given data, structure, and output. 
+            You are a JSON cleaner agent specialized in cleaning JSON from various documents, regardless of their format or quality.
+            Your task is to return clean JSON for the given data, structure, and output.
             The input document can be anything and may be poorly formatted.
 
             Please provide the JSON for the following data.

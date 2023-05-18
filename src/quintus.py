@@ -10,7 +10,7 @@ from database.schema.document import Document
 from loaders.zendesk import ZendeskLoader
 from utils.encoder import Encoder
 from utils.processor import Processor
-from utils.text import split_text, DOC_MAX_LENGTH
+from src.utils.text_splitter import TextSplitter
 
 
 class Quintus:
@@ -27,6 +27,7 @@ class Quintus:
         self.processor = Processor()
         self.encoder = Encoder(model_name)
         self.document_repository = Repository(Document)
+        self.text_splitter = TextSplitter()
 
     def serve(self):
         Api().serve()
@@ -54,7 +55,7 @@ class Quintus:
         for item in tqdm(data, desc="Saving embeddings..."):
             doc_text = self.processor.html_to_text(item["body"])
             if len(doc_text) > DOC_MAX_LENGTH:
-                docs = split_text(doc_text)
+                docs = self.text_splitter.split(doc_text)
                 for doc in docs:
                     self.save_document(item["id"], doc, item["title"], item["url"])
             else:

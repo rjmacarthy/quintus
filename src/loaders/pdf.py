@@ -15,12 +15,14 @@ class PdfLloader(Loader):
     def run(pdf_path: str) -> str:
         resource_manager = PDFResourceManager()
         return_string = StringIO()
-        codec = 'utf-8'
+        codec = "utf-8"
         laparams = LAParams()
-        device = TextConverter(resource_manager, return_string, codec=codec, laparams=laparams)
+        device = TextConverter(
+            resource_manager, return_string, codec=codec, laparams=laparams
+        )
         interpreter = PDFPageInterpreter(resource_manager, device)
 
-        with open(pdf_path, 'rb') as file:
+        with open(pdf_path, "rb") as file:
             for page in PDFPage.get_pages(file, check_extractable=True):
                 interpreter.process_page(page)
 
@@ -29,5 +31,3 @@ class PdfLloader(Loader):
         return_string.close()
 
         return text
-
-
