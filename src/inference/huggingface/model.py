@@ -1,6 +1,7 @@
 from transformers import AutoTokenizer, AutoModelForCausalLM
 import torch
 
+
 class HuggingFaceModel:
     def __init__(
         self,

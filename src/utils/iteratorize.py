@@ -5,6 +5,7 @@ from threading import Thread
 
 from utils.torch_utils import clear_torch_cache
 
+
 class Stream(transformers.StoppingCriteria):
     def __init__(self, callback_func=None):
         self.callback_func = callback_func
@@ -13,6 +14,7 @@ class Stream(transformers.StoppingCriteria):
         if self.callback_func is not None:
             self.callback_func(input_ids[0])
         return False
+
 
 class Iteratorize:
     """
@@ -72,4 +74,3 @@ class Iteratorize:
     def __exit__(self):
         self.stop_now = True
         clear_torch_cache()
-        

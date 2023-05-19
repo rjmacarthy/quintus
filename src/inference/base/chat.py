@@ -5,6 +5,7 @@ from database.schema.chat import Chat as ChatSchema
 from database.repository import Repository
 from prompts.prompts import Agents
 from inference.local.summarizer import Summarizer
+
 # from inference.local.entity_extractor import EntityExtractor
 
 

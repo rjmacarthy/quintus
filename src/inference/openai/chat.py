@@ -39,7 +39,9 @@ class OpenAIChat(Chat):
                 continue
 
             if message:
-               context = self.agents.get_context(message)
-               reply = self.agents.assistant(entity=entity, context=context, question=message)
-               message = reply["reply"]
-               print(f"🤖: {message}")
+                context = self.agents.get_context(message)
+                reply = self.agents.assistant(
+                    entity=entity, context=context, question=message
+                )
+                message = reply["reply"]
+                print(f"🤖: {message}")

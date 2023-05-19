@@ -3,9 +3,10 @@ from database.repository import Repository
 from database.repository import Repository
 from database.schema.document import Document
 from utils.encoder import Encoder
- 
+
 guidance.llm = guidance.llms.OpenAI("gpt-3.5-turbo")
 davinci = guidance.llms.OpenAI("text-davinci-003")
+
 
 class Agents:
     def __init__(self):
@@ -21,7 +22,8 @@ class Agents:
         return text[:max_prompt_length]
 
     def assistant(self, entity="user", context="", question=""):
-        agent = guidance("""
+        agent = guidance(
+            """
             {{#system~}}
                 You are a helpful and terse cusrtom support agent you only answer questions that are related to your domain.
             {{~/system}}
@@ -42,13 +44,15 @@ class Agents:
             {{#assistant~}}
                 {{gen 'reply' temperature=0 max_tokens=300}}
             {{~/assistant}}
-        """)
+        """
+        )
         return agent(entity=entity, context=context, question=question)
-        
+
     def classifier(self):
-        agent = guidance("""
+        agent = guidance(
+            """
             {{#system~}}
-                You are a document classifying agent responsible for classifying documents into one of the following options. 
+                You are a document classifying agent responsible for classifying documents into one of the following options.
                 Only answer with one word.
             {{~/system}}
             {{#user~}}
@@ -59,20 +63,22 @@ class Agents:
             {{#assistant~}}
                 {{gen 'reply' temperature=0 max_tokens=300}}
             {{~/assistant}}
-        """)
+        """
+        )
         return agent()
 
     def json_generator():
-         return guidance("""
+        return guidance(
+            """
             Your task is to return valid JSON objects for the given data and structure.
             Data could be in any format with separators such as commas, newlines, or spaces or any combination.
             You may receive additional arbitrary data.
-        
+
             Example:
 
             Data: [["joe bloggs, male, 38, Wales"], ["jane, "female", 25, England"]]
-            
-            Structure: 
+
+            Structure:
             ```json
                 { "name": string, "gender": string, "age": number, "id": number, "country": string }
             ```
@@ -98,16 +104,21 @@ class Agents:
             Data: {{data}}
             {f"Structure: {{structure}}" if structure else ""}
             Arbitrary Data: {{arbitrary_data}}
-            
+
             {{gen 'data' temperature=0 max_tokens=500}}
-        """, llm=davinci)
+        """,
+            llm=davinci,
+        )
 
     def json_cleaner(self):
-         return guidance("""
+        return guidance(
+            """
             You are a JSON cleaner agent specialized in cleaning JSON from various documents, regardless of their format or quality.
             Your task is to return clean JSON.
             The input document can be anything and may be poorly formatted.
 
             Please provide the JSON for the following data.
             Data: {{data}}
-        """, llm=davinci)
+        """,
+            llm=davinci,
+        )
