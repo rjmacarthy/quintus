@@ -1,8 +1,6 @@
-import os
-from sqlalchemy import create_engine, Engine
+from sqlalchemy import create_engine
 from sqlalchemy_utils import create_database, database_exists
 from sqlalchemy.sql import text
-from sqlalchemy.ext.declarative import declarative_base
 
 from database.schema import Base
 
@@ -18,7 +16,7 @@ def get_uri():
 
 
 def get_engine():
-    engine: Engine = create_engine(get_uri())
+    engine = create_engine(get_uri())
 
     if not database_exists(engine.url):
         create_database(engine.url)

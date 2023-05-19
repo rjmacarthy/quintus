@@ -1,6 +1,4 @@
 from bs4 import BeautifulSoup
-from pydash import join
-import pydash as _
 import spacy
 
 
@@ -16,7 +14,7 @@ class Processor:
         return doc_text
 
     def process(self, text: str) -> str:
-        doc_text = join(
+        doc_text = " ".join(
             [
                 token.text
                 for token in self.nlp(text)

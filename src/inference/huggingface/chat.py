@@ -3,7 +3,7 @@ import transformers
 import asyncio
 
 from inference.huggingface.model import HuggingFaceModel
-from prompts.prompts import Prompts
+from prompts.prompts import Agents
 from inference.base.chat import Chat
 from utils.iteratorize import Iteratorize, Stream
 from utils.torch_utils import clear_torch_cache
@@ -11,7 +11,7 @@ from utils.torch_utils import clear_torch_cache
 class HuggingfaceChat(Chat):
     def __init__(self):
         super().__init__()
-        self.prompts = Prompts()
+        self.agents = Agents()
         self.model, self.tokenizer = HuggingFaceModel().get_instance()
         self.generate_params = {}
 
