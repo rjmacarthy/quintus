@@ -3,18 +3,19 @@ import time
 from database.schema.message import Message
 from database.schema.chat import Chat as ChatSchema
 from database.repository import Repository
-from prompts.prompts import Prompts
+from prompts.prompts import Agents
 from inference.local.summarizer import Summarizer
-from inference.local.entity_extractor import EntityExtractor
+
+# from inference.local.entity_extractor import EntityExtractor
 
 
 class Chat:
     def __init__(self):
-        self.prompts = Prompts()
+        self.agents = Agents()
         self.chat_repository = Repository(ChatSchema)
         self.message_repository = Repository(Message)
         self.summarization = Summarizer("facebook/bart-large-cnn")
-        self.entity_extractor = EntityExtractor("dslim/bert-base-NER")
+        # self.entity_extractor = EntityExtractor("dslim/bert-base-NER")
         self.chat_id = self.create()
 
     def create(self) -> int:

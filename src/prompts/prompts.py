@@ -1,10 +1,14 @@
+import guidance
 from database.repository import Repository
 from database.repository import Repository
 from database.schema.document import Document
 from utils.encoder import Encoder
 
+guidance.llm = guidance.llms.OpenAI("gpt-3.5-turbo")
+davinci = guidance.llms.OpenAI("text-davinci-003")
 
-class Prompts:
+
+class Agents:
     def __init__(self):
         self.repository = Repository(Document)
         self.encoder = Encoder()
@@ -17,69 +21,104 @@ class Prompts:
         text = " ".join([result.doc_text for result in results[:num_relevant_docs]])
         return text[:max_prompt_length]
 
-    def system_prompt(self, entity):
-        return f"""
-            You are a helpful assistant for {entity} who answers questions based on given context.
-            Under no circumstances should you give an answer that is not in the context.
-            If they ask you if you are a bot, you should say that you are an assistant but dont mention who trained you.
-            Do not under any circumstances refer to "The article" or "context" use this for your answer but don't mention it.
-            If you cannot answer the question, say "I'm sorry, I don't know the answer to that question."
-            Remember please do not answer questions that are not in the context or mention the context or article when answering.
-        """.strip()
+    def assistant(self, entity="user", context="", question=""):
+        agent = guidance(
+            """
+            {{#system~}}
+                You are a helpful and terse cusrtom support agent you only answer questions that are related to your domain.
+            {{~/system}}
+            {{#user~}}
+                Hi are you there?
+            {{~/user}}
+            {{#assistant~}}
+                Hello, how can I help you today?
+            {{~/assistant}}
+            {{#user~}}
+                You will be given a context and a question. You must answer the question based on the context.
+                Continue the conversation as normal.
+                Question: {{question}}
+                Context: {{context}}
+                Do not mention the context in your answer if you cannot find the answer in the context.
+                Do not answer questions about anything else other than the context and the question.
+            {{~/user}}
+            {{#assistant~}}
+                {{gen 'reply' temperature=0 max_tokens=300}}
+            {{~/assistant}}
+        """
+        )
+        return agent(entity=entity, context=context, question=question)
 
-    def context_prompt(self, question, entity):
-        return f"""
-            You are a helpful assistant {entity}.
-            Sometimes you will be given a question, and sometimes it will be chit chat. If it's a question, you should answer it as follows:
-            Answer the following question "{question}" given the following information:
-            Information: {self.get_context(question)}
-            If you cannot find the answer in the information, say "I'm sorry, I don't know the answer to that question" and ask for another question.
-            If it's chit chat, you can respond in a kind and friendly manner.
-            Do not make up information or answer questions that are not in the information.
-        """.strip()
+    def classifier(self):
+        agent = guidance(
+            """
+            {{#system~}}
+                You are a document classifying agent responsible for classifying documents into one of the following options.
+                Only answer with one word.
+            {{~/system}}
+            {{#user~}}
+                Classify the following document into one of the following categories:
+                Categories: {{categories}}
+                Document: {{document}}
+            {{~/user}}
+            {{#assistant~}}
+                {{gen 'reply' temperature=0 max_tokens=300}}
+            {{~/assistant}}
+        """
+        )
+        return agent()
 
-    def classification_prompt(self, document, options, examples):
-        return f"""
-            You are a document classifying agent responsible for classifying documents into one of the following categories: {', '.join(options)}.
-            Only answer with one word.
-            Options: {', '.join(options)}
-            {f"Examples: {', '.join(examples)}" if examples else ''}
-            Document: {document}
-        """.strip()
+    def json_generator():
+        return guidance(
+            """
+            Your task is to return valid JSON objects for the given data and structure.
+            Data could be in any format with separators such as commas, newlines, or spaces or any combination.
+            You may receive additional arbitrary data.
 
-    def json_cleaner_system_prompt():
-        return """
-            You are a JSON generation agent responsible for generating JSON from various documents, irrespective of their format.
-            Your task is to return valid JSON objects whenever possible, avoiding arrays.
-            You should provide JSON responses in a markdown window without explanations or questions.
-            HTML should be removed from the documents, and if the response becomes too long, return { "error": "response too long" }.
-            You may receive additional arbitrary data to assist in generating the JSON.
-            When presented with a request for JSON generation along with a specified structure, you should respond with the corresponding JSON.
-            For example, if you receive the following request:
+            Example:
 
-            Data: "joe bloggs, male, 38"
+            Data: [["joe bloggs, male, 38, Wales"], ["jane, "female", 25, England"]]
 
-            Structure: { "name": "string", "gender": "string", "age": "number" }
-
-            You would reply with:
+            Structure:
+            ```json
+                { "name": string, "gender": string, "age": number, "id": number, "country": string }
             ```
-            {
-                "name": "Joe Bloggs",
-                "gender": "Male",
-                "age": 38
-            }
+
+            ```json
+            [
+                {
+                    "name": "Joe Bloggs",
+                    "gender": "Male",
+                    "age": 38
+                    "country": "Wales"
+                },
+                {
+                    "name": "Jane",
+                    "gender": "Female",
+                    "age": 25,
+                    "country": "England"
+                }
+            ]
             ```
 
-            Provide your first instruction for JSON generation by returning "Hello, world."
-        """.strip()
+            Please provide the JSON for the following data.
+            Data: {{data}}
+            {f"Structure: {{structure}}" if structure else ""}
+            Arbitrary Data: {{arbitrary_data}}
 
-    def json_cleaner_prompt(self, data, structure):
-        return f"""
+            {{gen 'data' temperature=0 max_tokens=500}}
+        """,
+            llm=davinci,
+        )
+
+    def json_cleaner(self):
+        return guidance(
+            """
             You are a JSON cleaner agent specialized in cleaning JSON from various documents, regardless of their format or quality.
-            Your task is to return clean JSON for the given data, structure, and output.
+            Your task is to return clean JSON.
             The input document can be anything and may be poorly formatted.
 
             Please provide the JSON for the following data.
-            Data: {data}
-            {f"Structure: {structure}" if structure else ""}
-        """.split()
+            Data: {{data}}
+        """,
+            llm=davinci,
+        )
