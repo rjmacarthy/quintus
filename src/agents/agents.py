@@ -104,7 +104,6 @@ class Agents:
             Data: {{data}}
             {f"Structure: {{structure}}" if structure else ""}
             Arbitrary Data: {{arbitrary_data}}
-
             {{gen 'data' temperature=0 max_tokens=500}}
         """,
             llm=davinci,
@@ -119,6 +118,7 @@ class Agents:
 
             Please provide the JSON for the following data.
             Data: {{data}}
+            {{gen 'data' temperature=0 max_tokens=500}}
         """,
             llm=davinci,
         )
