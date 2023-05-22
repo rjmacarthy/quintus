@@ -4,8 +4,8 @@ from database.repository import Repository
 from database.schema.document import Document
 from utils.encoder import Encoder
 
-guidance.llm = guidance.llms.OpenAI("gpt-3.5-turbo")
-davinci = guidance.llms.OpenAI("text-davinci-003")
+gpt_35_turbo = guidance.llms.OpenAI("gpt-3.5-turbo")
+text_davinci_003 = guidance.llms.OpenAI("text-davinci-003")
 
 
 class Agents:
@@ -44,7 +44,7 @@ class Agents:
             {{#assistant~}}
                 {{gen 'reply' temperature=0 max_tokens=300}}
             {{~/assistant}}
-        """
+        """, llm=gpt_35_turbo
         )
         return agent(entity=entity, context=context, question=question)
 
@@ -63,7 +63,7 @@ class Agents:
             {{#assistant~}}
                 {{gen 'reply' temperature=0 max_tokens=300}}
             {{~/assistant}}
-        """
+        """, llm=gpt_35_turbo
         )
         return agent()
 
@@ -106,7 +106,7 @@ class Agents:
             Arbitrary Data: {{arbitrary_data}}
             {{gen 'data' temperature=0 max_tokens=500}}
         """,
-            llm=davinci,
+            llm=text_davinci_003,
         )
 
     def json_cleaner(self):
@@ -120,5 +120,5 @@ class Agents:
             Data: {{data}}
             {{gen 'data' temperature=0 max_tokens=500}}
         """,
-            llm=davinci,
+            llm=text_davinci_003,
         )
